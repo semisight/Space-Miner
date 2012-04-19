@@ -9,6 +9,8 @@
 
 #include <map>
 #include <vector>
+#include <iostream>
+#include <sstream>
 
 #include "play.h"
 
@@ -22,11 +24,14 @@ public:
     void paintEvent(QPaintEvent *);
     void timerEvent(QTimerEvent *);
     void keyPressEvent(QKeyEvent *);
+    void keyReleaseEvent(QKeyEvent *);
 
 private:
     std::vector<ob*> objects;
     play player;
     int timer_id;
+
+    bool keys[4];
 
     QApplication *app;
 };

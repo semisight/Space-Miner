@@ -18,24 +18,38 @@ window::~window() {
 
 void window::paintEvent(QPaintEvent *ev) {
     QPainter ctx(this);
-    ctx.setBrush(Qt::SolidPattern);
 
     for(int i=0; i<objects.size(); i++) {
-        int r = objects[i]->getRad();
+        if(!objects[i]->getDead()) {
+            int r = objects[i]->getRad();
 
-        ctx.drawEllipse(QPointF(objects[i]->getX(), objects[i]->getY()), r, r);
+            ctx.setBrush(objects[i]->getCol());
+            ctx.drawEllipse(QPointF(objects[i]->getX(), objects[i]->getY()), r, r);
+        }
     }
 
-    ctx.setBrush(QBrush(QColor(55,55,255)));
+    ctx.setBrush(player.getCol());
     ctx.drawEllipse(QPointF(player.getX(), player.getY()),
                     player.getRad(),
                     player.getRad());
 }
 
 void window::timerEvent(QTimerEvent *ev) {
-    for(int i=0; i<objects.size(); i++)
-        objects[i]->mov();
+    //set title: name, score, lives
+    stringstream ss;
+    ss << "Space Miner lives:" << player.getLives() << " score: " << player.getScore();
 
+    app->setApplicationName(ss.str());
+
+    //move objects
+    for(int i=0; i<objects.size(); i++) {
+        objects[i]->mov();
+        if(objects[i]->coll_detect(player)) {
+            objects[i]->kill();
+        }
+    }
+
+    //move player
     player.mov();
 
     repaint();
@@ -44,16 +58,38 @@ void window::timerEvent(QTimerEvent *ev) {
 void window::keyPressEvent(QKeyEvent *ev) {
     switch(ev->key()) {
     case Qt::Key_Left:
-        player.setDir(KEY_LEFT);
+        player.setKey(KEY_LEFT, true);
         break;
     case Qt::Key_Right:
-        player.setDir(KEY_RIGHT);
+        player.setKey(KEY_RIGHT, true);
         break;
     case Qt::Key_Up:
-        player.setDir(KEY_UP);
+        player.setKey(KEY_UP, true);
         break;
     case Qt::Key_Down:
-        player.setDir(KEY_DOWN);
+        player.setKey(KEY_DOWN, true);
+        break;
+    case Qt::Key_Q:
+        app->exit();
+        break;
+    default:
+        ev->ignore();
+    }
+}
+
+void window::keyReleaseEvent(QKeyEvent *ev) {
+    switch(ev->key()) {
+    case Qt::Key_Left:
+        player.setKey(KEY_LEFT, false);
+        break;
+    case Qt::Key_Right:
+        player.setKey(KEY_RIGHT, false);
+        break;
+    case Qt::Key_Up:
+        player.setKey(KEY_UP, false);
+        break;
+    case Qt::Key_Down:
+        player.setKey(KEY_DOWN, false);
         break;
     case Qt::Key_Q:
         app->exit();

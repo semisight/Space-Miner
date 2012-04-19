@@ -10,7 +10,7 @@
 #define rnd(a, b) ((rand() % (b-a)) + a)
 
 enum {
-    KEY_LEFT = 1,
+    KEY_LEFT = 0,
     KEY_RIGHT,
     KEY_DOWN,
     KEY_UP

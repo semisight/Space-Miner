@@ -1,6 +1,10 @@
 #include "play.h"
 
 play::play() : ob(S_WID/2, S_HGT/2, 0, 1, 6, QColor(0, 0, 255)), score(0), lives(3) {
+    keys[0] = false;
+    keys[1] = false;
+    keys[2] = false;
+    keys[3] = false;
 }
 
 void play::reset() {
@@ -30,31 +34,23 @@ int play::getLives() {
 
 void play::mov() {
 
+    sp *= .93;
+
     //Process Keyboard input
-    switch(dir) {
-        case KEY_UP:
-            sp += 0.3;
-            break;
-        case KEY_LEFT:
-            rot -= 0.4;
-            break;
-        case KEY_DOWN:
-            sp -= 0.3;
-            break;
-        case KEY_RIGHT:
-            rot += 0.4;
-            break;
-    }
+        if(keys[KEY_UP]) sp += 0.25;
+        if(keys[KEY_LEFT]) rot -= 0.15;
+        if(keys[KEY_DOWN]) sp -= 0.25;
+        if(keys[KEY_RIGHT]) rot += 0.15;
 
     dir = 0;
 
     //Keep the player's speed within a sane range
-    if(sp > 2) sp = 2;
-    if(sp < -2) sp = -2;
+    if(sp > 4) sp = 4;
+    if(sp < -4) sp = -4;
 
     ob::mov();
 }
 
-void play::setDir(int ndir) {
-    dir = ndir;
+void play::setKey(int ind, bool set) {
+    keys[ind] = set;
 }

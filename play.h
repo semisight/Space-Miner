@@ -9,6 +9,7 @@ public:
     play();
 
     void mov();
+    void coll_detect(const ob &b);
 
     void reset();
 
@@ -18,11 +19,12 @@ public:
     void decLives();
     int getLives();
 
-    void setDir(int ndir);
+    void setKey(int ind, bool set);
 
     bool shouldExit();
 private:
     int score, lives, dir;
+    bool keys[4];
 };
 
 

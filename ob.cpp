@@ -12,22 +12,34 @@ void ob::mov() {
     if(y < 0) y = S_HGT-1;
 }
 
-void ob::draw() {
-    //mvaddch((int)y, (int)x, ch);
+bool ob::coll_detect(const ob &b) const {
+    return (hypot(x-b.getX(), y-b.getY()) < (rad + b.getRad()));
 }
 
-double ob::getX() {
+double ob::getX() const {
     return x;
 }
 
-double ob::getY() {
+double ob::getY() const {
     return y;
 }
 
-double ob::getRot() {
+double ob::getRot() const {
     return rot;
 }
 
-double ob::getRad() {
+double ob::getRad() const {
     return rad;
+}
+
+QColor ob::getCol() const {
+    return col;
+}
+
+bool ob::getDead() const {
+    return dead;
+}
+
+void ob::kill() {
+    dead = true;
 }
