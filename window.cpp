@@ -6,11 +6,14 @@ window::window(QApplication *parent) : app(parent) {
     for(int i=0; i<40; i++)
         objects.push_back(new rock);
 
-    startTimer(10);
+    timer_id = startTimer(10);
 }
 
 window::~window() {
-    
+    for(int i=0; i<objects.size(); i++)
+        delete objects[i];
+
+    killTimer(timer_id);
 }
 
 void window::paintEvent(QPaintEvent *ev) {

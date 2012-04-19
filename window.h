@@ -26,6 +26,7 @@ public:
 private:
     std::vector<ob*> objects;
     play player;
+    int timer_id;
 
     QApplication *app;
 };
