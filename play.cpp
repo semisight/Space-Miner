@@ -1,6 +1,6 @@
 #include "play.h"
 
-play::play() : ob(S_WID/2, S_HGT/2, 0, 1, '@'), score(0), lives(3) {
+play::play() : ob(S_WID/2, S_HGT/2, 0, 1, 20, QColor(0, 0, 255)), score(0), lives(3) {
 }
 
 void play::reset() {

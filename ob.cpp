@@ -27,3 +27,7 @@ double ob::getY() {
 double ob::getRot() {
     return rot;
 }
+
+double ob::getRad() {
+    return rad;
+}

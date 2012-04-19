@@ -4,7 +4,10 @@
 #include <QWidget>
 #include <QApplication>
 #include <QKeyEvent>
+#include <QPainter>
 #include <Qt>
+
+#include <map>
 #include <vector>
 
 #include "play.h"
