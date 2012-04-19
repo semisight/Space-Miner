@@ -7,6 +7,7 @@
 #include <QPainter>
 #include <Qt>
 
+#include <algorithm>
 #include <map>
 #include <vector>
 #include <iostream>

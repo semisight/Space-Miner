@@ -13,7 +13,7 @@ void ob::mov() {
 }
 
 bool ob::coll_detect(const ob &b) const {
-    return (hypot(x-b.getX(), y-b.getY()) < (rad + b.getRad()));
+    return (hypot(x-b.getX(), y-b.getY()) < (rad + b.getRad())) && !dead;
 }
 
 double ob::getX() const {
@@ -42,4 +42,8 @@ bool ob::getDead() const {
 
 void ob::kill() {
     dead = true;
+}
+
+bool ob::isDead(ob *b) {
+     return b->getDead();
 }

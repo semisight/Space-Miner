@@ -30,6 +30,8 @@ public:
 
     void kill();
 
+    static bool isDead(ob *b);
+
 protected:
     double x, y;        //Position
     double rot, sp;     //Rotation and speed

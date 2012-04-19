@@ -35,17 +35,21 @@ void window::paintEvent(QPaintEvent *ev) {
 }
 
 void window::timerEvent(QTimerEvent *ev) {
+    //do basic cleanup
+    remove_if(objects.begin(), objects.end(), ob::isDead);
+
     //set title: name, score, lives
     stringstream ss;
     ss << "Space Miner lives:" << player.getLives() << " score: " << player.getScore();
 
-    app->setApplicationName(ss.str());
+    setWindowTitle(ss.str().c_str());
 
     //move objects
     for(int i=0; i<objects.size(); i++) {
         objects[i]->mov();
         if(objects[i]->coll_detect(player)) {
             objects[i]->kill();
+            player.incScore();
         }
     }
 
