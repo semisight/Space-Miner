@@ -1,6 +1,6 @@
 #include "play.h"
 
-play::play() : ob(S_WID/2, S_HGT/2, 0, 1, 20, QColor(0, 0, 255)), score(0), lives(3) {
+play::play() : ob(S_WID/2, S_HGT/2, 0, 1, 6, QColor(0, 0, 255)), score(0), lives(3) {
 }
 
 void play::reset() {
@@ -46,9 +46,11 @@ void play::mov() {
             break;
     }
 
+    dir = 0;
+
     //Keep the player's speed within a sane range
-    if(sp > 1) sp = 1;
-    if(sp < -1) sp = -1;
+    if(sp > 2) sp = 2;
+    if(sp < -2) sp = -2;
 
     ob::mov();
 }

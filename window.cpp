@@ -6,7 +6,7 @@ window::window(QApplication *parent) : app(parent) {
     for(int i=0; i<40; i++)
         objects.push_back(new rock);
 
-    timer_id = startTimer(10);
+    timer_id = startTimer(33);
 }
 
 window::~window() {
@@ -18,18 +18,25 @@ window::~window() {
 
 void window::paintEvent(QPaintEvent *ev) {
     QPainter ctx(this);
+    ctx.setBrush(Qt::SolidPattern);
 
     for(int i=0; i<objects.size(); i++) {
-        ctx.drawEllipse(QPointF(objects[i]->getX(), objects[i]->getY()),
-                        objects[i]->getRad(), objects[i]->getRad());
+        int r = objects[i]->getRad();
+
+        ctx.drawEllipse(QPointF(objects[i]->getX(), objects[i]->getY()), r, r);
     }
+
+    ctx.setBrush(QBrush(QColor(55,55,255)));
+    ctx.drawEllipse(QPointF(player.getX(), player.getY()),
+                    player.getRad(),
+                    player.getRad());
 }
 
 void window::timerEvent(QTimerEvent *ev) {
     for(int i=0; i<objects.size(); i++)
         objects[i]->mov();
 
-    //player.mov();
+    player.mov();
 
     repaint();
 }

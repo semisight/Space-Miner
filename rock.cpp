@@ -1,4 +1,5 @@
 #include "rock.h"
+using namespace std;
 
 rock::rock() : ob(rnd(0,S_WID),
                   rnd(0,S_HGT),
@@ -7,7 +8,3 @@ rock::rock() : ob(rnd(0,S_WID),
                   4,
                   QColor(22,255,22)) {
 };
-
-bool rock::isEvil() {
-    return evil;
-}
