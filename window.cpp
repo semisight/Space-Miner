@@ -15,6 +15,7 @@ window::window(QApplication *parent) : app(parent) {
         objects.push_back(new rock(BIG));
 
     enemies.push_back(new stupid(&player));
+    enemies.push_back(new deft(&player));
     enemies.push_back(new hoarder(&player, objects));
 
 

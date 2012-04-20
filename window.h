@@ -16,6 +16,7 @@
 #include "play.h"
 #include "stupid.h"
 #include "hoarder.h"
+#include "deft.h"
 
 class window : public QWidget {
     Q_OBJECT
