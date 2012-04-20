@@ -5,16 +5,8 @@ using namespace std;
 //---- constructor & destructor
 
 window::window(QApplication *parent) : app(parent) {
-    for(int i=0; i<40; i++)
-        objects.push_back(new rock(false));
-
-    enemies.push_back(new stupid(&player));
-    enemies.push_back(new deft(&player));
-    enemies.push_back(new deft(&player));
-    enemies.push_back(new deft(&player));
-    enemies.push_back(new hoarder(&player, objects));
-
-
+    level = EASY;
+    level_begin();
     timer_id = startTimer(33);
 }
 
@@ -57,27 +49,150 @@ void window::paintEvent(QPaintEvent *ev) {
 }
 
 void window::timerEvent(QTimerEvent *ev) {
+    //it runs with reset(false) but not reset(true), limitedly.
+    //the objects on screen move around randomly.
 
+    reset(false);
+    level_begin();
+    //game_loop();
+    /*
     //Check victory/failure
-    if(objects.empty()) {
-        cout << "You win!\n";
+    switch(check_win_loss()) {
+        case 0:
+            game_loop();
+            break;
+        case 1:
+            //stop and let player rest
+        cout << "No crash!\n";
+
+            reset(true);
+            level_begin();
+            break;
+        case -1:
+            app->exit();
+            break;
+    }*/
+
+
+    repaint();
+}
+
+void window::keyPressEvent(QKeyEvent *ev) {
+    switch(ev->key()) {
+    case Qt::Key_Left:
+        player.setKey(KEY_LEFT, true);
+        break;
+    case Qt::Key_Right:
+        player.setKey(KEY_RIGHT, true);
+        break;
+    case Qt::Key_Up:
+        player.setKey(KEY_UP, true);
+        break;
+    case Qt::Key_Down:
+        player.setKey(KEY_DOWN, true);
+        break;
+    case Qt::Key_Space:
+        player.setKey(SPACE, true);
+        break;
+    case Qt::Key_Q:
         app->exit();
-    } else if(player.getLives() <= 0) {
-        cout << "You lose!\n";
+        break;
+    default:
+        ev->ignore();
+    }
+}
+
+void window::keyReleaseEvent(QKeyEvent *ev) {
+    switch(ev->key()) {
+    case Qt::Key_Left:
+        player.setKey(KEY_LEFT, false);
+        break;
+    case Qt::Key_Right:
+        player.setKey(KEY_RIGHT, false);
+        break;
+    case Qt::Key_Up:
+        player.setKey(KEY_UP, false);
+        break;
+    case Qt::Key_Down:
+        player.setKey(KEY_DOWN, false);
+        break;
+    case Qt::Key_Space:
+        player.setKey(SPACE, false);
+        break;
+    case Qt::Key_Q:
         app->exit();
+        break;
+    default:
+        ev->ignore();
+    }
+}
+
+void window::level_begin() {
+    switch(level) {
+        case EASY:
+            for(int i=0; i<1; i++)
+                objects.push_back(new rock(false));
+
+            for(int i=0; i<3; i++)
+                enemies.push_back(new hoarder(&player, objects));
+            break;
+        case MED:
+            for(int i=0; i<50; i++)
+                objects.push_back(new rock(false));
+
+            for(int i=0; i<2; i++)
+                enemies.push_back(new hoarder(&player, objects));
+
+            for(int i=0; i<2; i++)
+                objects.push_back(new deft(false));
+            break;
+        case HARD:
+            for(int i=0; i<60; i++)
+                objects.push_back(new rock(false));
+
+            for(int i=0; i<40; i++)
+                objects.push_back(new stupid(&player));
+
+            for(int i=0; i<2; i++)
+                enemies.push_back(new hoarder(&player, objects));
+
+            for(int i=0; i<3; i++)
+                enemies.push_back(new deft(&player));
+            break;
     }
 
+    //ensure next time the level is one higher.
+    level++;
+}
+
+void window::game_loop() {
     //do basic cleanup
+    clean();
+
+    //set title: name, score, lives
+    set_title();
+
+    //move and detect
+    move_and_interact();
+
+    //shoot
+    process_shots();
+}
+
+void window::clean() {
     objects.resize(remove_if(objects.begin(), objects.end(), ob::isDead) - objects.begin());
     badobjs.resize(remove_if(badobjs.begin(), badobjs.end(), ob::isDead) - badobjs.begin());
     enemies.resize(remove_if(enemies.begin(), enemies.end(), ob::isDead) - enemies.begin());
+}
 
-    //set title: name, score, lives
+void window::set_title() {
     stringstream ss;
-    ss << "Space Miner! -- Lives:" << player.getLives() << " -- Score: " << player.getScore();
+    ss << "Space Miner! -- Lives:" << player.getLives() << " -- Score: " << player.getScore() << " -- Level: " << level;
     setWindowTitle(ss.str().c_str());
+}
 
-    //move objects
+void window::move_and_interact() {
+    //move objects & detect player & objects
     for(int i=0; i<objects.size(); i++) {
         objects[i]->mov();
         if(objects[i]->coll_detect(&player)) {
@@ -134,6 +249,7 @@ void window::timerEvent(QTimerEvent *ev) {
                                               objects[i]->getX(),
                                               objects[i]->getY(),
                                               objects[i]->getRot()));
+                    objects[i]->hit(badobjs[j]);
                 } else {
                     badobjs[j]->kill();
                     objects[i]->hit(badobjs[j]);
@@ -147,8 +263,9 @@ void window::timerEvent(QTimerEvent *ev) {
 
     //move player
     player.mov();
+}
 
-    //shoot
+void window::process_shots() {
     if(player.request_shot())
         badobjs.push_back(player.shoot());
 
@@ -156,56 +273,32 @@ void window::timerEvent(QTimerEvent *ev) {
         if(enemies[i]->request_shot())
             badobjs.push_back(enemies[i]->shoot());
     }
-
-    repaint();
 }
 
-void window::keyPressEvent(QKeyEvent *ev) {
-    switch(ev->key()) {
-    case Qt::Key_Left:
-        player.setKey(KEY_LEFT, true);
-        break;
-    case Qt::Key_Right:
-        player.setKey(KEY_RIGHT, true);
-        break;
-    case Qt::Key_Up:
-        player.setKey(KEY_UP, true);
-        break;
-    case Qt::Key_Down:
-        player.setKey(KEY_DOWN, true);
-        break;
-    case Qt::Key_Space:
-        player.setKey(SPACE, true);
-        break;
-    case Qt::Key_Q:
-        app->exit();
-        break;
-    default:
-        ev->ignore();
+int window::check_win_loss() {
+    if(objects.empty()) {
+        return 1;
+    } else if(player.getLives() <= 0) {
+        return -1;
     }
+
+    return 0;
 }
 
-void window::keyReleaseEvent(QKeyEvent *ev) {
-    switch(ev->key()) {
-    case Qt::Key_Left:
-        player.setKey(KEY_LEFT, false);
-        break;
-    case Qt::Key_Right:
-        player.setKey(KEY_RIGHT, false);
-        break;
-    case Qt::Key_Up:
-        player.setKey(KEY_UP, false);
-        break;
-    case Qt::Key_Down:
-        player.setKey(KEY_DOWN, false);
-        break;
-    case Qt::Key_Space:
-        player.setKey(SPACE, false);
-        break;
-    case Qt::Key_Q:
-        app->exit();
-        break;
-    default:
-        ev->ignore();
-    }
+void window::reset(bool winner=false) {
+    for(int i=0; i<objects.size(); i++)
+        if(objects[i]) delete objects[i];
+
+    for(int i=0; i<badobjs.size(); i++)
+        if(badobjs[i]) delete badobjs[i];
+
+    for(int i=0; i<enemies.size(); i++)
+        if(enemies[i]) delete enemies[i];
+
+    objects.clear();
+    badobjs.clear();
+    enemies.clear();
+    player.reset();
+
+    if(!winner) level = 0;
 }

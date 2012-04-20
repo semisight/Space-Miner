@@ -59,8 +59,6 @@ int ob::getPoints() const {
 }
 
 void ob::hit(ob *b) {
-    //TODO: realistic hits
-    //momentum: vnew = (m1*v1 + m2*v2) / (m1+m2)
     double v1x = cos(rot) * sp;
     double v1y = sin(rot) * sp;
     double v2x = cos(b->getRot()) * b->getSp();

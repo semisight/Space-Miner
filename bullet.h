@@ -9,7 +9,6 @@ public:
 
     void mov();
 private:
-    int life;
 };
 
 #endif // BULLET_H
