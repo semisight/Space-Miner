@@ -11,7 +11,7 @@ window::window(QApplication *parent) : app(parent) {
 
 window::~window() {
     for(int i=0; i<objects.size(); i++)
-        delete objects[i];
+        if(objects[i]) delete objects[i];
 
     killTimer(timer_id);
 }
@@ -20,23 +20,17 @@ void window::paintEvent(QPaintEvent *ev) {
     QPainter ctx(this);
 
     for(int i=0; i<objects.size(); i++) {
-        if(!objects[i]->getDead()) {
-            int r = objects[i]->getRad();
-
-            ctx.setBrush(objects[i]->getCol());
-            ctx.drawEllipse(QPointF(objects[i]->getX(), objects[i]->getY()), r, r);
-        }
+        if(!objects[i]->getDead())
+            objects[i]->draw(ctx);
     }
 
-    ctx.setBrush(player.getCol());
-    ctx.drawEllipse(QPointF(player.getX(), player.getY()),
-                    player.getRad(),
-                    player.getRad());
+    player.draw(ctx);
 }
 
 void window::timerEvent(QTimerEvent *ev) {
     //do basic cleanup
-    remove_if(objects.begin(), objects.end(), ob::isDead);
+    //This is causing problems when ~window is called
+    //remove_if(objects.begin(), objects.end(), ob::isDead);
 
     //set title: name, score, lives
     stringstream ss;

@@ -3,8 +3,8 @@
 
 #include <cmath>
 
-#define S_WID 640
-#define S_HGT 480
+#define S_WID 1024
+#define S_HGT 768
 
 //A quick and dirty macro that generates numbers on the interval [a, b).
 #define rnd(a, b) ((rand() % (b-a)) + a)

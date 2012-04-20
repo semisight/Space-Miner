@@ -1,5 +1,6 @@
 #include "play.h"
 
+//Constructor
 play::play() : ob(S_WID/2, S_HGT/2, 0, 1, 6, QColor(0, 0, 255)), score(0), lives(3) {
     keys[0] = false;
     keys[1] = false;
@@ -7,30 +8,7 @@ play::play() : ob(S_WID/2, S_HGT/2, 0, 1, 6, QColor(0, 0, 255)), score(0), lives
     keys[3] = false;
 }
 
-void play::reset() {
-    x = S_WID/2;
-    y = S_HGT/2;
-    rot = 0;
-    sp = 1;
-    score = 0;
-    lives = 3;
-}
-
-void play::incScore() {
-    score += 20;
-}
-
-int play::getScore() {
-    return score;
-}
-
-void play::decLives() {
-    lives -= 1;
-}
-
-int play::getLives() {
-    return lives;
-}
+//---- inherited functions
 
 void play::mov() {
 
@@ -49,6 +27,48 @@ void play::mov() {
     if(sp < -4) sp = -4;
 
     ob::mov();
+}
+
+void play::draw(QPainter &ctx) {
+    //setup transforms
+    ctx.translate(x, y);
+    ctx.rotate(rot * 180/M_PI);
+
+    ctx.setBrush(col);
+    ctx.drawPolygon(triangle, 3);
+
+    //teardown transforms
+    ctx.translate(-x, -y);
+    ctx.rotate(-rot * 180/M_PI);
+}
+
+//---- misc functions
+
+void play::reset() {
+    x = S_WID/2;
+    y = S_HGT/2;
+    rot = 0;
+    sp = 1;
+    score = 0;
+    lives = 3;
+}
+
+//---- getters and setters
+
+void play::incScore() {
+    score += 20;
+}
+
+int play::getScore() {
+    return score;
+}
+
+void play::decLives() {
+    lives -= 1;
+}
+
+int play::getLives() {
+    return lives;
 }
 
 void play::setKey(int ind, bool set) {

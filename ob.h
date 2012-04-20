@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <Qt>
 #include <QColor>
+#include <QPainter>
 
 #include "defs.h"
 
@@ -15,6 +16,7 @@ public:
         : x(nx), y(ny), rot(d), sp(s), rad(sz), col(c), dead(false) {};
 	
 	virtual void mov();
+    virtual void draw(QPainter &ctx);
 
 	//friend is needed to it can access the x,y hidden fields. The alternative was making x,y
 	//public, or making it a member function. I think this solution is more explicit than the

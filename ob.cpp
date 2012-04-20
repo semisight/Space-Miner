@@ -12,6 +12,11 @@ void ob::mov() {
     if(y < 0) y = S_HGT-1;
 }
 
+void ob::draw(QPainter &ctx) {
+    ctx.setBrush(col);
+    ctx.drawEllipse(QPointF(x, y), rad, rad);
+}
+
 bool ob::coll_detect(const ob &b) const {
     return (hypot(x-b.getX(), y-b.getY()) < (rad + b.getRad())) && !dead;
 }
