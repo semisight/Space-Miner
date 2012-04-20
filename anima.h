@@ -31,7 +31,7 @@ public:
     virtual bool firing() = 0;
     bool request_shot();
 protected:
-    int score, lives, bullet_chg;
+    int lives, bullet_chg;
 };
 
 #endif // ANIMA_H

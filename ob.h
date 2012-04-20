@@ -16,7 +16,7 @@ class ob {
 public:
     //Constructor
     ob(double nx, double ny, double d, double s, double sz, QColor c)
-        : x(nx), y(ny), rot(d), sp(s), rad(sz), col(c), dead(false) {};
+        : x(nx), y(ny), rot(d), sp(s), rad(sz), col(c), points(0), dead(false) {};
 	
     //Inherited functions
 	virtual void mov();

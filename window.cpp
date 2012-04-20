@@ -15,6 +15,8 @@ window::window(QApplication *parent) : app(parent) {
         objects.push_back(new rock(BIG));
 
     enemies.push_back(new stupid(&player));
+    enemies.push_back(new hoarder(&player, objects));
+
 
     timer_id = startTimer(33);
 }
@@ -22,6 +24,12 @@ window::window(QApplication *parent) : app(parent) {
 window::~window() {
     for(int i=0; i<objects.size(); i++)
         if(objects[i]) delete objects[i];
+
+    for(int i=0; i<badobjs.size(); i++)
+        if(badobjs[i]) delete badobjs[i];
+
+    for(int i=0; i<enemies.size(); i++)
+        if(enemies[i]) delete enemies[i];
 
     killTimer(timer_id);
 }
@@ -38,6 +46,11 @@ void window::paintEvent(QPaintEvent *ev) {
             objects[i]->draw(ctx);
     }
 
+    for(int i=0; i<badobjs.size(); i++) {
+        if(!badobjs[i]->getDead())
+            badobjs[i]->draw(ctx);
+    }
+
     for(int i=0; i<enemies.size(); i++) {
         if(!enemies[i]->getDead())
             enemies[i]->draw(ctx);
@@ -50,7 +63,8 @@ void window::timerEvent(QTimerEvent *ev) {
 
     //do basic cleanup
     objects.resize(remove_if(objects.begin(), objects.end(), ob::isDead) - objects.begin());
-    //enemies.resize(remove_if(enemies.begin(), enemies.end(), ob::isDead) - enemies.begin());
+    badobjs.resize(remove_if(badobjs.begin(), badobjs.end(), ob::isDead) - badobjs.begin());
+    enemies.resize(remove_if(enemies.begin(), enemies.end(), ob::isDead) - enemies.begin());
 
     //set title: name, score, lives
     stringstream ss;
@@ -66,15 +80,36 @@ void window::timerEvent(QTimerEvent *ev) {
         }
     }
 
-    //move objects
+    //detect player & badobjs
+    for(int i=0; i<badobjs.size(); i++) {
+        badobjs[i]->mov();
+        if(badobjs[i]->coll_detect(&player)) {
+            badobjs[i]->kill();
+            player.decLives();
+        }
+    }
+
+    //move badobjs
+    for(int i=0; i<badobjs.size(); i++)
+        badobjs[i]->mov();
+
+    //move enemies & do collision detection in the same loop
     for(int i=0; i<enemies.size(); i++) {
         enemies[i]->mov();
 
-        //move objects
+        //enemies earn points too!
         for(int j=0; j<objects.size(); j++) {
             if(objects[j]->coll_detect(enemies[i])) {
                 objects[j]->kill();
                 enemies[i]->incScore(objects[j]->getPoints());
+            }
+        }
+
+        //enemies can die... of course?
+        for(int j=0; j<badobjs.size(); j++) {
+            if(badobjs[j]->coll_detect(enemies[i])) {
+                badobjs[j]->kill();
+                enemies[i]->decLives();
             }
         }
     }
@@ -84,11 +119,11 @@ void window::timerEvent(QTimerEvent *ev) {
 
     //shoot
     if(player.request_shot())
-        objects.push_back(player.shoot());
+        badobjs.push_back(player.shoot());
 
     for(int i=0; i<enemies.size(); i++) {
         if(enemies[i]->request_shot())
-            objects.push_back(enemies[i]->shoot());
+            badobjs.push_back(enemies[i]->shoot());
     }
 
     repaint();

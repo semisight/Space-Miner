@@ -2,7 +2,7 @@
 using namespace std;
 
 anima::anima(double nx, double ny, double d, double s, double ss, QColor c) :
-    ob(nx, ny, d, s, ss, c), score(0), lives(3), bullet_chg(0) {
+    ob(nx, ny, d, s, ss, c), lives(3), bullet_chg(0) {
 }
 
 ob* anima::shoot() {
@@ -10,7 +10,6 @@ ob* anima::shoot() {
     qx = x + cos(rot)*10;
     qy = y + sin(rot)*10;
 
-    cout << "Fire the missiles!\n";
     return new bullet(qx, qy, rot);
 }
 
@@ -34,6 +33,14 @@ void anima::draw(QPainter &ctx) {
 }
 
 void anima::mov() {
+    //Kinda cheating here. This function is guaranteed to be called once per time step,
+    //so I'm using it for all the anima level counters/states that are time sensitive/
+    //have no better place to be.
+
+    //Kill if lives are <=0.
+    if(lives <= 0) dead = true;
+
+    //Calculate bullet recharge time.
     if(bullet_chg > 0) bullet_chg--;
     if(bullet_chg < 0) bullet_chg = 0;
 }
@@ -41,11 +48,11 @@ void anima::mov() {
 void anima::incScore(int point) {
     col = QColor(255,255,255);
 
-    score += point;
+    points += point;
 }
 
 int anima::getScore() {
-    return score;
+    return points;
 }
 
 void anima::decLives() {

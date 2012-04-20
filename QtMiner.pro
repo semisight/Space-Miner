@@ -18,7 +18,8 @@ SOURCES += main.cpp\
     anima.cpp \
     bullet.cpp \
     stupid.cpp \
-    pugilist.cpp
+    pugilist.cpp \
+    hoarder.cpp
 
 HEADERS  += window.h \
     ob.h \
@@ -28,4 +29,5 @@ HEADERS  += window.h \
     anima.h \
     bullet.h \
     stupid.h \
-    pugilist.h
+    pugilist.h \
+    hoarder.h

@@ -15,6 +15,7 @@
 
 #include "play.h"
 #include "stupid.h"
+#include "hoarder.h"
 
 class window : public QWidget {
     Q_OBJECT
@@ -32,6 +33,7 @@ public:
 
 private:
     std::vector<ob*> objects;
+    std::vector<ob*> badobjs;
     std::vector<anima*> enemies;
     play player;
     int timer_id;

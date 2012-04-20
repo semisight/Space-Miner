@@ -2,9 +2,6 @@
 
 //Constructor
 play::play() : anima(S_WID/2, S_HGT/2, 0, 1, 6, QColor(0, 0, 255)) {
-    score = 0;
-    lives = 3;
-
     keys[0] = false;
     keys[1] = false;
     keys[2] = false;
@@ -44,7 +41,7 @@ void play::reset() {
     y = S_HGT/2;
     rot = 0;
     sp = 1;
-    score = 0;
+    points = 0;
     lives = 3;
 }
 
