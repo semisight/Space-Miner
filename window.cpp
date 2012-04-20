@@ -114,6 +114,28 @@ void window::timerEvent(QTimerEvent *ev) {
         }
     }
 
+    //detect object & badobj collisions
+    for(int i=0; i<objects.size(); i++) {
+        vector<ob*> tmpbad;
+
+        //sometimes good objects go bad...
+        for(int j=0; j<badobjs.size(); j++) {
+            if(badobjs[j]->coll_detect(objects[i])) {
+                if(AM_I_EVIL_NOW) {
+                    badobjs[j]->kill();
+                    objects[i]->kill();
+                    tmpbad.push_back(new rock(HOW_EVIL, objects[i]->getX(), objects[i]->getY()));
+                } else {
+                    badobjs[j]->kill();
+                    objects[i]->hit();
+                }
+            }
+        }
+
+        for(int j=0; j<tmpbad.size(); j++)
+            badobjs.push_back(tmpbad[j]);
+    }
+
     //move player
     player.mov();
 

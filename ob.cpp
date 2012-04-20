@@ -54,6 +54,13 @@ int ob::getPoints() const {
     return points;
 }
 
+void ob::hit() {
+    //TODO: realistic hits
+
+    sp += .2;
+    rot += M_PI;
+}
+
 bool ob::isDead(ob *b) {
     return b->getDead();
 }

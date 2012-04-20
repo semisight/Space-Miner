@@ -27,7 +27,7 @@ public:
 	//member function route, so I chose it.
     virtual bool coll_detect(ob *b);
 
-    //getters
+    //getters & setters
     double getX() const;
     double getY() const;
     double getRot() const;
@@ -36,6 +36,7 @@ public:
     bool getDead() const;
     int getPoints() const;
     void kill();
+    void hit();
 
     static bool isDead(ob *b);
 
