@@ -10,6 +10,8 @@
 
 //All these classes are documented in much further depth in design.txt
 
+const QPen default_pen(QBrush(QColor(0,0,0)), 2, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin);
+
 class ob {
 public:
     //Constructor
@@ -23,7 +25,7 @@ public:
 	//friend is needed to it can access the x,y hidden fields. The alternative was making x,y
 	//public, or making it a member function. I think this solution is more explicit than the
 	//member function route, so I chose it.
-    virtual bool coll_detect(const ob &b) const;
+    virtual bool coll_detect(ob *b);
 
     //getters
     double getX() const;

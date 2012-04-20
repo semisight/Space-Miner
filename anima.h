@@ -2,6 +2,7 @@
 #define ANIMA_H
 
 #include "ob.h"
+#include "bullet.h"
 
 //Abstract base class for "live" objects (including player)
 
@@ -13,9 +14,12 @@ const QPointF triangle[3] = {
 
 class anima : public ob {
 public:
-    anima(double nx, double ny, double d, double s, double ss, QColor c) : ob(nx, ny,d, s, ss, c) {};
+    anima(double nx, double ny, double d, double s, double ss, QColor c);
+
+    virtual ob* shoot();
 
     void draw(QPainter &ctx);
+    virtual void mov();
 
     //Setters and getters
     virtual void incScore(int point);
@@ -23,8 +27,11 @@ public:
 
     virtual void decLives();
     virtual int getLives();
+
+    virtual bool firing() = 0;
+    bool request_shot();
 protected:
-    int score, lives;
+    int score, lives, bullet_chg;
 };
 
 #endif // ANIMA_H

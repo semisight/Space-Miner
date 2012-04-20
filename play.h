@@ -12,13 +12,14 @@ public:
 
     //Inherited functions
     void mov();
+    bool firing();
 
     //This should be virtual. All objects should be capable of reset?
     void reset();
 
     void setKey(int ind, bool set);
 private:
-    bool keys[4];
+    bool keys[5];
 };
 
 

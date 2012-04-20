@@ -15,7 +15,6 @@ class rock : public ob {
 public:
     rock(int rock_size);
 
-    int getRockSize() const;
 private:
 };
 

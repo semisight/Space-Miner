@@ -15,11 +15,17 @@ SOURCES += main.cpp\
     ob.cpp \
     rock.cpp \
     play.cpp \
-    anima.cpp
+    anima.cpp \
+    bullet.cpp \
+    stupid.cpp \
+    pugilist.cpp
 
 HEADERS  += window.h \
     ob.h \
     rock.h \
     play.h \
     defs.h \
-    anima.h
+    anima.h \
+    bullet.h \
+    stupid.h \
+    pugilist.h

@@ -9,6 +9,7 @@ play::play() : anima(S_WID/2, S_HGT/2, 0, 1, 6, QColor(0, 0, 255)) {
     keys[1] = false;
     keys[2] = false;
     keys[3] = false;
+    keys[4] = false;
 }
 
 //---- inherited functions
@@ -27,7 +28,13 @@ void play::mov() {
     if(sp > 4) sp = 4;
     if(sp < -4) sp = -4;
 
+    //Call superclass mov functions
+    anima::mov();
     ob::mov();
+}
+
+bool play::firing() {
+    return keys[SPACE];
 }
 
 //---- misc functions

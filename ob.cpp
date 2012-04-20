@@ -1,4 +1,5 @@
 #include "ob.h"
+using namespace std;
 
 void ob::mov() {
 	//Trig calculations to update the object's position
@@ -17,8 +18,8 @@ void ob::draw(QPainter &ctx) {
     ctx.drawEllipse(QPointF(x, y), rad, rad);
 }
 
-bool ob::coll_detect(const ob &b) const {
-    return (hypot(x-b.getX(), y-b.getY()) < (rad + b.getRad())) && !dead;
+bool ob::coll_detect(ob *b) {
+    return (hypot(x-b->getX(), y-b->getY()) < (rad + b->getRad())) && !dead;
 }
 
 double ob::getX() const {
@@ -54,5 +55,5 @@ int ob::getPoints() const {
 }
 
 bool ob::isDead(ob *b) {
-     return b->getDead();
+    return b->getDead();
 }

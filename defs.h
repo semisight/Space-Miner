@@ -3,6 +3,7 @@
 
 #include <ctime>
 #include <cmath>
+#include <iostream>
 
 #define S_WID 1024
 #define S_HGT 768
@@ -14,7 +15,8 @@ enum {
     KEY_LEFT = 0,
     KEY_RIGHT,
     KEY_DOWN,
-    KEY_UP
+    KEY_UP,
+    SPACE
 };
 
 #endif // DEFS_H
