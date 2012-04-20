@@ -31,12 +31,13 @@ public:
     double getX() const;
     double getY() const;
     double getRot() const;
+    double getSp() const;
     double getRad() const;
     QColor getCol() const;
     bool getDead() const;
     int getPoints() const;
     void kill();
-    void hit();
+    void hit(ob *b);
 
     static bool isDead(ob *b);
 

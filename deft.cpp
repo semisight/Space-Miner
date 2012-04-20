@@ -1,7 +1,7 @@
 #include "deft.h"
 
 deft::deft(play *p) : pugilist(p) {
-    sp = 1;
+    sp = 1.5;
 }
 
 void deft::mov() {

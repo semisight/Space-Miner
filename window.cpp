@@ -5,16 +5,12 @@ using namespace std;
 //---- constructor & destructor
 
 window::window(QApplication *parent) : app(parent) {
-    for(int i=0; i<30; i++)
-        objects.push_back(new rock(SMALL));
-
-    for(int i=0; i<7; i++)
-        objects.push_back(new rock(MEDIUM));
-
-    for(int i=0; i<3; i++)
-        objects.push_back(new rock(BIG));
+    for(int i=0; i<40; i++)
+        objects.push_back(new rock(false));
 
     enemies.push_back(new stupid(&player));
+    enemies.push_back(new deft(&player));
+    enemies.push_back(new deft(&player));
     enemies.push_back(new deft(&player));
     enemies.push_back(new hoarder(&player, objects));
 
@@ -61,6 +57,15 @@ void window::paintEvent(QPaintEvent *ev) {
 }
 
 void window::timerEvent(QTimerEvent *ev) {
+
+    //Check victory/failure
+    if(objects.empty()) {
+        cout << "You win!\n";
+        app->exit();
+    } else if(player.getLives() <= 0) {
+        cout << "You lose!\n";
+        app->exit();
+    }
 
     //do basic cleanup
     objects.resize(remove_if(objects.begin(), objects.end(), ob::isDead) - objects.begin());
@@ -125,10 +130,13 @@ void window::timerEvent(QTimerEvent *ev) {
                 if(AM_I_EVIL_NOW) {
                     badobjs[j]->kill();
                     objects[i]->kill();
-                    tmpbad.push_back(new rock(HOW_EVIL, objects[i]->getX(), objects[i]->getY()));
+                    tmpbad.push_back(new rock(true,
+                                              objects[i]->getX(),
+                                              objects[i]->getY(),
+                                              objects[i]->getRot()));
                 } else {
                     badobjs[j]->kill();
-                    objects[i]->hit();
+                    objects[i]->hit(badobjs[j]);
                 }
             }
         }

@@ -66,7 +66,8 @@ int anima::getLives() {
 }
 
 bool anima::request_shot() {
-    if(firing() && bullet_chg==0) {
+    if(firing() && bullet_chg==0 && points > 10) {
+        points -= 10;
         bullet_chg = 30;
         return true;
     } else {

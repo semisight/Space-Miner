@@ -1,50 +1,38 @@
 #include "rock.h"
 using namespace std;
 
-rock::rock(int rock_size) : ob(rnd(0,S_WID),
+rock::rock(bool e) : ob(rnd(0,S_WID),
                   rnd(0,S_HGT),
                   rnd(0,628)/100.0,
                   .2,
                   4,
-                  QColor(22,255,128)) {
-    points = 20;
-    setup_rock(rock_size);
+                  QColor(22,255,128)),
+                  evil(e) {
+
+    points = rnd(0, 60);
 }
 
-rock::rock(int rock_size, double nx, double ny) : ob(rnd(0,S_WID),
-                                                     rnd(0,S_HGT),
-                                                     rnd(0,628)/100.0,
-                                                     .2,
-                                                     4,
-                                                     QColor(22,255,128)) {
-    x = nx, y = ny;
-
-    setup_rock(rock_size);
+rock::rock(bool e, double nx, double ny, double r) : ob(rnd(0,S_WID),
+                                   rnd(0,S_HGT),
+                                   rnd(0,628)/100.0,
+                                   .2,
+                                   4,
+                                   QColor(22,255,128)),
+                                   evil(e){
+    points = rnd(0, 60);
+    x = nx, y = ny, rot = r;
 }
 
-void rock::setup_rock(int rock_size) {
-    switch(rock_size) {
-        case MEDIUM:
-            sp = .8;
-            rad = 5;
-            col = QColor(128,255,22);
-            points = 30;
-            break;
-        case BIG:
-            sp = 1.6;
-            rad = 6;
-            col = QColor(192,255,22);
-            points = 50;
-            break;
-        case EVIL:
-            sp = 1.6;
-            rad = 4;
-            col = QColor(255,192,22);
-            break;
-        case BIG_EVIL:
-            sp = 3.2;
-            rad = 5;
-            col = QColor(255,22,192);
-            break;
+void rock::mov() {
+    rad = 4 + points/30;
+
+    if(!evil) {
+        col.setHsv((int)(-2.5*points + 210)%360, 240, 240);
+        sp = points / 30 * .6 + 1;
+    } else {
+        col.setHsv((int)(-1.5*points + 390)%360, 240, 240);
+        sp = points / 30 * 1.2 + 1;
     }
+
+    ob::mov();
 }

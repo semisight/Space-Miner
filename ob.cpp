@@ -34,6 +34,10 @@ double ob::getRot() const {
     return rot;
 }
 
+double ob::getSp() const {
+    return sp;
+}
+
 double ob::getRad() const {
     return rad;
 }
@@ -54,11 +58,20 @@ int ob::getPoints() const {
     return points;
 }
 
-void ob::hit() {
+void ob::hit(ob *b) {
     //TODO: realistic hits
+    //momentum: vnew = (m1*v1 + m2*v2) / (m1+m2)
+    double v1x = cos(rot) * sp;
+    double v1y = sin(rot) * sp;
+    double v2x = cos(b->getRot()) * b->getSp();
+    double v2y = cos(b->getRot()) * b->getSp();
 
-    sp += .2;
-    rot += M_PI;
+    double vnx = ((v1x*points) + (v2x*b->getPoints()))/(points+b->getPoints());
+    double vny = ((v1y*points) + (v2y*b->getPoints()))/(points+b->getPoints());
+
+    sp = hypot(vnx, vny);
+    rot = atan2(vny, vnx);
+    points += b->getPoints();
 }
 
 bool ob::isDead(ob *b) {
