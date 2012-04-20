@@ -49,6 +49,10 @@ void ob::kill() {
     dead = true;
 }
 
+int ob::getPoints() const {
+    return points;
+}
+
 bool ob::isDead(ob *b) {
      return b->getDead();
 }

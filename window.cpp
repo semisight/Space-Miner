@@ -2,9 +2,17 @@
 #include "rock.h"
 using namespace std;
 
+//---- constructor & destructor
+
 window::window(QApplication *parent) : app(parent) {
-    for(int i=0; i<40; i++)
-        objects.push_back(new rock);
+    for(int i=0; i<30; i++)
+        objects.push_back(new rock(SMALL));
+
+    for(int i=0; i<7; i++)
+        objects.push_back(new rock(MEDIUM));
+
+    for(int i=0; i<3; i++)
+        objects.push_back(new rock(BIG));
 
     timer_id = startTimer(33);
 }
@@ -16,8 +24,12 @@ window::~window() {
     killTimer(timer_id);
 }
 
+//---- inherited functions
+
 void window::paintEvent(QPaintEvent *ev) {
     QPainter ctx(this);
+
+    ctx.setPen(QPen(QBrush(QColor(0,0,0)), 2, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin));
 
     for(int i=0; i<objects.size(); i++) {
         if(!objects[i]->getDead())
@@ -28,9 +40,9 @@ void window::paintEvent(QPaintEvent *ev) {
 }
 
 void window::timerEvent(QTimerEvent *ev) {
+
     //do basic cleanup
-    //This is causing problems when ~window is called
-    //remove_if(objects.begin(), objects.end(), ob::isDead);
+    objects.resize(remove_if(objects.begin(), objects.end(), ob::isDead) - objects.begin());
 
     //set title: name, score, lives
     stringstream ss;
@@ -43,7 +55,7 @@ void window::timerEvent(QTimerEvent *ev) {
         objects[i]->mov();
         if(objects[i]->coll_detect(player)) {
             objects[i]->kill();
-            player.incScore();
+            player.incScore(objects[i]->getPoints());
         }
     }
 

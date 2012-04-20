@@ -30,6 +30,9 @@ void play::mov() {
 }
 
 void play::draw(QPainter &ctx) {
+    //move player color slowly to black.
+    col = QColor(col.red()*.95, col.green()*.95, col.blue()*.95);
+
     //setup transforms
     ctx.translate(x, y);
     ctx.rotate(rot * 180/M_PI);
@@ -55,8 +58,10 @@ void play::reset() {
 
 //---- getters and setters
 
-void play::incScore() {
-    score += 20;
+void play::incScore(int point) {
+    col = QColor(255,255,255);
+
+    score += point;
 }
 
 int play::getScore() {

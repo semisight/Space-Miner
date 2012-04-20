@@ -1,6 +1,7 @@
 #ifndef DEFS_H
 #define DEFS_H
 
+#include <ctime>
 #include <cmath>
 
 #define S_WID 1024

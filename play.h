@@ -24,7 +24,7 @@ public:
     void reset();
 
     //Setters and getters
-    void incScore();
+    void incScore(int point);
     int getScore();
 
     void decLives();

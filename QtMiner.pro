@@ -14,12 +14,10 @@ SOURCES += main.cpp\
         window.cpp \
     ob.cpp \
     rock.cpp \
-    play.cpp \
-    enemy.cpp
+    play.cpp
 
 HEADERS  += window.h \
     ob.h \
     rock.h \
     play.h \
-    defs.h \
-    enemy.h
+    defs.h

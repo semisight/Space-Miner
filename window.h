@@ -19,9 +19,11 @@ class window : public QWidget {
     Q_OBJECT
     
 public:
+    //Constructor & destructor
     window(QApplication *parent = 0);
     ~window();
 
+    //Inherited functions
     void paintEvent(QPaintEvent *);
     void timerEvent(QTimerEvent *);
     void keyPressEvent(QKeyEvent *);
