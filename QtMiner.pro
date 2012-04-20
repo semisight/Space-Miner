@@ -14,10 +14,12 @@ SOURCES += main.cpp\
         window.cpp \
     ob.cpp \
     rock.cpp \
-    play.cpp
+    play.cpp \
+    anima.cpp
 
 HEADERS  += window.h \
     ob.h \
     rock.h \
     play.h \
-    defs.h
+    defs.h \
+    anima.h
