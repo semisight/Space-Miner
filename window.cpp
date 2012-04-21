@@ -119,7 +119,7 @@ void window::keyReleaseEvent(QKeyEvent *ev) {
 void window::level_begin() {
     switch(level) {
         case EASY:
-            for(int i=0; i<40; i++)
+            for(int i=0; i<80; i++)
                 objects.push_back(new rock(false));
 
             for(int i=0; i<3; i++)
@@ -258,6 +258,16 @@ void window::move_and_interact() {
             badobjs.push_back(tmpbad[j]);
     }
 
+    //Last but not least, object & object
+    for(uint i=0; i<objects.size(); i++) {
+        for(uint j=0; j<objects.size(); j++) {
+            if(i != j && objects[i]->coll_detect(objects[j])) {
+                objects[j]->kill();
+                objects[i]->hit(objects[j]);
+            }
+        }
+    }
+
     //move player
     player.mov();
 }
@@ -295,7 +305,7 @@ void window::reset(bool winner=false) {
     objects.clear();
     badobjs.clear();
     enemies.clear();
-    player.reset();
+    player.reset(winner);
 
     if(!winner) level = 0;
 }

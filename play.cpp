@@ -38,13 +38,15 @@ bool play::firing() {
 
 //---- misc functions
 
-void play::reset() {
-    x = S_WID/2;
-    y = S_HGT/2;
-    rot = 0;
-    sp = 1;
-    points = 0;
-    lives = 3;
+void play::reset(bool winner) {
+    if(!winner) {
+        x = S_WID/2;
+        y = S_HGT/2;
+        rot = 0;
+        sp = 1;
+        points = 0;
+        lives = 3;
+    }
 }
 
 //---- getters and setters

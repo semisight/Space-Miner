@@ -15,7 +15,7 @@ public:
     bool firing();
 
     //This should be virtual. All objects should be capable of reset?
-    void reset();
+    void reset(bool winner);
 
     void setKey(int ind, bool set);
 private:
