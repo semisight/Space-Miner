@@ -32,6 +32,7 @@ public:
     bool request_shot();
 protected:
     int lives, bullet_chg;
+    QColor def_col;
 };
 
 #endif // ANIMA_H

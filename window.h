@@ -24,6 +24,17 @@ enum {
     HARD
 };
 
+const QString greetings(
+        "Hello, intrepid explorer! Welcome to Space Miner! I think you'll see"
+        " that there's more to this game than meets the eye.\n\n"
+        "The premise here is simple; collect the cool yellow/green blue rocks"
+        " that you see floating around to get points. Avoid enemies and their"
+        " bullets (avoid your bullets too). You can shoot with as well (use"
+        " the [SPACE] bar), but it costs energy, which is taken from your"
+        "points. Your score and lives are in the title of the window. That's"
+        "it!\n\n"
+        "Press any key_");
+
 class window : public QWidget {
     Q_OBJECT
     
@@ -33,8 +44,8 @@ public:
     ~window();
 
     //Inherited functions
-    void paintEvent(QPaintEvent *);
-    void timerEvent(QTimerEvent *);
+    void paintEvent(QPaintEvent * __attribute__((unused)));
+    void timerEvent(QTimerEvent * __attribute__((unused)));
     void keyPressEvent(QKeyEvent *);
     void keyReleaseEvent(QKeyEvent *);
 

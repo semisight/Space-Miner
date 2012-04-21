@@ -4,6 +4,7 @@
 #include <ctime>
 #include <cmath>
 #include <iostream>
+#include <Qt>
 
 #define S_WID 1024
 #define S_HGT 768

@@ -11,13 +11,13 @@ window::window(QApplication *parent) : app(parent) {
 }
 
 window::~window() {
-    for(int i=0; i<objects.size(); i++)
+    for(uint i=0; i<objects.size(); i++)
         if(objects[i]) delete objects[i];
 
-    for(int i=0; i<badobjs.size(); i++)
+    for(uint i=0; i<badobjs.size(); i++)
         if(badobjs[i]) delete badobjs[i];
 
-    for(int i=0; i<enemies.size(); i++)
+    for(uint i=0; i<enemies.size(); i++)
         if(enemies[i]) delete enemies[i];
 
     killTimer(timer_id);
@@ -25,22 +25,22 @@ window::~window() {
 
 //---- inherited functions
 
-void window::paintEvent(QPaintEvent *ev) {
+void window::paintEvent(QPaintEvent *ev __attribute__((unused))) {
     QPainter ctx(this);
 
     ctx.setPen(default_pen);
 
-    for(int i=0; i<objects.size(); i++) {
+    for(uint i=0; i<objects.size(); i++) {
         if(!objects[i]->getDead())
             objects[i]->draw(ctx);
     }
 
-    for(int i=0; i<badobjs.size(); i++) {
+    for(uint i=0; i<badobjs.size(); i++) {
         if(!badobjs[i]->getDead())
             badobjs[i]->draw(ctx);
     }
 
-    for(int i=0; i<enemies.size(); i++) {
+    for(uint i=0; i<enemies.size(); i++) {
         if(!enemies[i]->getDead())
             enemies[i]->draw(ctx);
     }
@@ -48,31 +48,20 @@ void window::paintEvent(QPaintEvent *ev) {
     player.draw(ctx);
 }
 
-void window::timerEvent(QTimerEvent *ev) {
-    //it runs with reset(false) but not reset(true), limitedly.
-    //the objects on screen move around randomly.
-
-    reset(false);
-    level_begin();
-    //game_loop();
-    /*
-    //Check victory/failure
+void window::timerEvent(QTimerEvent *ev __attribute__((unused))) {
     switch(check_win_loss()) {
         case 0:
             game_loop();
             break;
         case 1:
             //stop and let player rest
-        cout << "No crash!\n";
-
             reset(true);
             level_begin();
             break;
         case -1:
             app->exit();
             break;
-    }*/
-
+    }
 
     repaint();
 }
@@ -130,7 +119,7 @@ void window::keyReleaseEvent(QKeyEvent *ev) {
 void window::level_begin() {
     switch(level) {
         case EASY:
-            for(int i=0; i<1; i++)
+            for(int i=0; i<40; i++)
                 objects.push_back(new rock(false));
 
             for(int i=0; i<3; i++)
@@ -144,14 +133,14 @@ void window::level_begin() {
                 enemies.push_back(new hoarder(&player, objects));
 
             for(int i=0; i<2; i++)
-                objects.push_back(new deft(false));
+                enemies.push_back(new deft(&player));
             break;
         case HARD:
             for(int i=0; i<60; i++)
                 objects.push_back(new rock(false));
 
             for(int i=0; i<40; i++)
-                objects.push_back(new stupid(&player));
+                enemies.push_back(new stupid(&player));
 
             for(int i=0; i<2; i++)
                 enemies.push_back(new hoarder(&player, objects));
@@ -163,6 +152,14 @@ void window::level_begin() {
 
     //ensure next time the level is one higher.
     level++;
+}
+
+void window::end_screen() {
+
+}
+
+void window::menu() {
+    //TODO: Implement.
 }
 
 void window::game_loop() {
@@ -193,7 +190,7 @@ void window::set_title() {
 
 void window::move_and_interact() {
     //move objects & detect player & objects
-    for(int i=0; i<objects.size(); i++) {
+    for(uint i=0; i<objects.size(); i++) {
         objects[i]->mov();
         if(objects[i]->coll_detect(&player)) {
             objects[i]->kill();
@@ -202,7 +199,7 @@ void window::move_and_interact() {
     }
 
     //detect player & badobjs
-    for(int i=0; i<badobjs.size(); i++) {
+    for(uint i=0; i<badobjs.size(); i++) {
         badobjs[i]->mov();
         if(badobjs[i]->coll_detect(&player)) {
             badobjs[i]->kill();
@@ -211,15 +208,15 @@ void window::move_and_interact() {
     }
 
     //move badobjs
-    for(int i=0; i<badobjs.size(); i++)
+    for(uint i=0; i<badobjs.size(); i++)
         badobjs[i]->mov();
 
     //move enemies & do collision detection in the same loop
-    for(int i=0; i<enemies.size(); i++) {
+    for(uint i=0; i<enemies.size(); i++) {
         enemies[i]->mov();
 
         //enemies earn points too!
-        for(int j=0; j<objects.size(); j++) {
+        for(uint j=0; j<objects.size(); j++) {
             if(objects[j]->coll_detect(enemies[i])) {
                 objects[j]->kill();
                 enemies[i]->incScore(objects[j]->getPoints());
@@ -227,7 +224,7 @@ void window::move_and_interact() {
         }
 
         //enemies can die... of course?
-        for(int j=0; j<badobjs.size(); j++) {
+        for(uint j=0; j<badobjs.size(); j++) {
             if(badobjs[j]->coll_detect(enemies[i])) {
                 badobjs[j]->kill();
                 enemies[i]->decLives();
@@ -236,11 +233,11 @@ void window::move_and_interact() {
     }
 
     //detect object & badobj collisions
-    for(int i=0; i<objects.size(); i++) {
+    for(uint i=0; i<objects.size(); i++) {
         vector<ob*> tmpbad;
 
         //sometimes good objects go bad...
-        for(int j=0; j<badobjs.size(); j++) {
+        for(uint j=0; j<badobjs.size(); j++) {
             if(badobjs[j]->coll_detect(objects[i])) {
                 if(AM_I_EVIL_NOW) {
                     badobjs[j]->kill();
@@ -257,7 +254,7 @@ void window::move_and_interact() {
             }
         }
 
-        for(int j=0; j<tmpbad.size(); j++)
+        for(uint j=0; j<tmpbad.size(); j++)
             badobjs.push_back(tmpbad[j]);
     }
 
@@ -269,7 +266,7 @@ void window::process_shots() {
     if(player.request_shot())
         badobjs.push_back(player.shoot());
 
-    for(int i=0; i<enemies.size(); i++) {
+    for(uint i=0; i<enemies.size(); i++) {
         if(enemies[i]->request_shot())
             badobjs.push_back(enemies[i]->shoot());
     }
@@ -286,13 +283,13 @@ int window::check_win_loss() {
 }
 
 void window::reset(bool winner=false) {
-    for(int i=0; i<objects.size(); i++)
+    for(uint i=0; i<objects.size(); i++)
         if(objects[i]) delete objects[i];
 
-    for(int i=0; i<badobjs.size(); i++)
+    for(uint i=0; i<badobjs.size(); i++)
         if(badobjs[i]) delete badobjs[i];
 
-    for(int i=0; i<enemies.size(); i++)
+    for(uint i=0; i<enemies.size(); i++)
         if(enemies[i]) delete enemies[i];
 
     objects.clear();

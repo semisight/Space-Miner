@@ -7,6 +7,8 @@ play::play() : anima(S_WID/2, S_HGT/2, 0, 1, 6, QColor(0, 0, 255)) {
     keys[2] = false;
     keys[3] = false;
     keys[4] = false;
+
+    def_col = QColor(0,0,255);
 }
 
 //---- inherited functions

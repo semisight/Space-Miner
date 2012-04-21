@@ -2,7 +2,7 @@
 using namespace std;
 
 anima::anima(double nx, double ny, double d, double s, double ss, QColor c) :
-    ob(nx, ny, d, s, ss, c), lives(3), bullet_chg(0) {
+    ob(nx, ny, d, s, ss, c), lives(3), bullet_chg(0), def_col(QColor()) {
 }
 
 ob* anima::shoot() {
@@ -15,7 +15,9 @@ ob* anima::shoot() {
 
 void anima::draw(QPainter &ctx) {
     //move player color slowly to black.
-    col = QColor(col.red()*.95, col.green()*.95, col.blue()*.95);
+    col = QColor(col.red()*.95+def_col.red()*.05,
+                 col.green()*.95+def_col.green()*.05,
+                 col.blue()*.95+def_col.blue()*.05);
 
     //setup transforms
     ctx.translate(x, y);
