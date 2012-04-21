@@ -119,24 +119,24 @@ void window::keyReleaseEvent(QKeyEvent *ev) {
 void window::level_begin() {
     switch(level) {
         case EASY:
-            for(int i=0; i<80; i++)
+            for(int i=0; i<70; i++)
                 objects.push_back(new rock(false));
 
             for(int i=0; i<3; i++)
                 enemies.push_back(new hoarder(&player, objects));
             break;
         case MED:
-            for(int i=0; i<50; i++)
+            for(int i=0; i<70; i++)
                 objects.push_back(new rock(false));
 
             for(int i=0; i<2; i++)
                 enemies.push_back(new hoarder(&player, objects));
 
             for(int i=0; i<2; i++)
-                enemies.push_back(new deft(&player));
+                enemies.push_back(new deft(&player, objects));
             break;
         case HARD:
-            for(int i=0; i<60; i++)
+            for(int i=0; i<70; i++)
                 objects.push_back(new rock(false));
 
             for(int i=0; i<40; i++)
@@ -146,7 +146,7 @@ void window::level_begin() {
                 enemies.push_back(new hoarder(&player, objects));
 
             for(int i=0; i<3; i++)
-                enemies.push_back(new deft(&player));
+                enemies.push_back(new deft(&player, objects));
             break;
     }
 
@@ -239,7 +239,7 @@ void window::move_and_interact() {
         //sometimes good objects go bad...
         for(uint j=0; j<badobjs.size(); j++) {
             if(badobjs[j]->coll_detect(objects[i])) {
-                if(AM_I_EVIL_NOW) {
+                if(4*badobjs[j]->getPoints() > objects[i]->getPoints()) {
                     badobjs[j]->kill();
                     objects[i]->kill();
                     tmpbad.push_back(new rock(true,

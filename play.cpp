@@ -1,7 +1,7 @@
 #include "play.h"
 
 //Constructor
-play::play() : anima(S_WID/2, S_HGT/2, 0, 1, 6, QColor(0, 0, 255)) {
+play::play() : anima(S_WID/2, S_HGT/2, 0, 1, 6.5, QColor(0, 0, 255)) {
     keys[0] = false;
     keys[1] = false;
     keys[2] = false;

@@ -7,8 +7,8 @@ class hoarder : public pugilist {
 public:
     hoarder(play *p, std::vector<ob*> &g);
 
-    void mov();
-    bool firing();
+    virtual void mov();
+    virtual bool firing();
 
 private:
     std::vector<ob*> &good;

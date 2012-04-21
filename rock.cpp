@@ -18,7 +18,7 @@ rock::rock(bool e, double nx, double ny, double r) : ob(rnd(0,S_WID),
                                    .2,
                                    4,
                                    QColor(22,255,128)),
-                                   evil(e){
+                                   evil(e) {
     points = rnd(0, 60);
     x = nx, y = ny, rot = r;
 }
@@ -26,13 +26,18 @@ rock::rock(bool e, double nx, double ny, double r) : ob(rnd(0,S_WID),
 void rock::mov() {
     rad = 4 + points/30;
 
+    int hue;
     if(!evil) {
-        col.setHsv((int)(-2.5*points + 210)%360, 240, 240);
+        //trying exponential:
+        hue = 210*exp((double)-points/15) + 30;
         sp = points / 30 * .6 + 1;
     } else {
-        col.setHsv((int)(-1.5*points + 390)%360, 240, 240);
+        hue = 60*exp((double)-points/15) + 270;
         sp = points / 30 * 1.2 + 1;
     }
+
+    hue = hue < 0 ? 0 : hue;
+    col.setHsv(hue, 240, 240);
 
     ob::mov();
 }

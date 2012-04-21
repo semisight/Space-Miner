@@ -9,7 +9,6 @@ QT       += core gui
 TARGET = QtMiner
 TEMPLATE = app
 
-
 SOURCES += main.cpp\
         window.cpp \
     ob.cpp \
