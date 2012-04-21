@@ -25,7 +25,7 @@ public:
 	//friend is needed to it can access the x,y hidden fields. The alternative was making x,y
 	//public, or making it a member function. I think this solution is more explicit than the
 	//member function route, so I chose it.
-    virtual bool coll_detect(ob *b);
+    virtual bool coll_detect(ob *b) const;
 
     //getters & setters
     double getX() const;

@@ -9,6 +9,7 @@ class rock : public ob {
 public:
     rock(bool e);
     rock(bool e, double nx, double ny, double r);
+    rock(bool e, double nx, double ny, double r, int pnts);
 
     void mov();
 

@@ -18,7 +18,7 @@ void ob::draw(QPainter &ctx) {
     ctx.drawEllipse(QPointF(x, y), rad, rad);
 }
 
-bool ob::coll_detect(ob *b) {
+bool ob::coll_detect(ob *b) const {
     return (hypot(x-b->getX(), y-b->getY()) < (rad + b->getRad())) && !dead;
 }
 

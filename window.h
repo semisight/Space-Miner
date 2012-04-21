@@ -18,22 +18,44 @@
 #include "hoarder.h"
 #include "deft.h"
 
+//Levels
 enum {
     EASY,
     MED,
     HARD
 };
 
-const QString greetings(
-        "Hello, intrepid explorer! Welcome to Space Miner! I think you'll see"
-        " that there's more to this game than meets the eye.\n\n"
-        "The premise here is simple; collect the cool yellow/green blue rocks"
-        " that you see floating around to get points. Avoid enemies and their"
-        " bullets (avoid your bullets too). You can shoot with as well (use"
-        " the [SPACE] bar), but it costs energy, which is taken from your"
-        "points. Your score and lives are in the title of the window. That's"
-        "it!\n\n"
+//Game states
+enum {
+    GAME,
+    END_SC,
+    BEGIN
+};
+
+namespace words {
+    const QString greetings(
+        "\tHello, intrepid explorer! Welcome to Space Miner! I think you'll"
+        " see that there's more to this game than meets the eye.\n\n"
+        "\tThe premise here is simple; collect the cool yellow/green blue"
+        " rocks that you see floating around to get points. Avoid enemies and"
+        " their bullets, and poisoned rocks (red/purple). Avoid your bullets"
+        " too. You can shoot with as well (use the [SPACE] bar), but it costs"
+        "energy, which is taken from your points. Your score and lives are in"
+        " the title of the window. That's it!\n\n"
+        "Press any alphabetic key_");
+
+    const QString next_level(
+        "Excellent work captain! You may not be done yet, unfortunately."
+        " There's another wave of enemies com--my God...\n\n"
         "Press any key_");
+
+    const QString better_luck(
+        "In a last ditch effort to save yourself, you eject yourself in a life"
+        " capsule, leaving your crew to face a horrible death. You'll always"
+        " regret this moment, but hey, you'll live to fight another day...\n\n"
+        "Press Q to quit, or any other alphabetic key to play again."
+        );
+}
 
 class window : public QWidget {
     Q_OBJECT
@@ -73,8 +95,8 @@ private:
     play player;
     int timer_id;
     int level;
-
-    //bool keys[4];
+    int game_state;
+    bool still_playing;
 
     QApplication *app;
 };

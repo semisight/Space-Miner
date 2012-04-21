@@ -6,6 +6,8 @@ using namespace std;
 
 window::window(QApplication *parent) : app(parent) {
     level = EASY;
+    game_state = BEGIN;
+    still_playing = true;
     level_begin();
     timer_id = startTimer(33);
 }
@@ -27,67 +29,118 @@ window::~window() {
 
 void window::paintEvent(QPaintEvent *ev __attribute__((unused))) {
     QPainter ctx(this);
-
     ctx.setPen(default_pen);
+    ctx.setFont(QFont("Helvetica Neue", 18, 300));
 
-    for(uint i=0; i<objects.size(); i++) {
-        if(!objects[i]->getDead())
-            objects[i]->draw(ctx);
+    switch(game_state) {
+        case BEGIN:
+            ctx.drawText(QRectF(40, 40, S_WID-40, S_HGT-40),
+                         Qt::AlignLeft | Qt::TextWordWrap,
+                         words::greetings);
+            break;
+        case END_SC:
+            player.draw(ctx);
+
+            if(still_playing) {
+                //Print get ready for level "level"
+                ctx.drawText(QRectF(40, 40, S_WID-40, S_HGT-40),
+                             Qt::AlignLeft | Qt::TextWordWrap,
+                             words::next_level);
+            } else {
+                //Print you lost!
+                ctx.drawText(QRectF(40, 40, S_WID-40, S_HGT-40),
+                             Qt::AlignLeft | Qt::TextWordWrap,
+                             words::better_luck);
+            }
+            break;
+        case GAME:
+            for(uint i=0; i<objects.size(); i++) {
+                if(!objects[i]->getDead())
+                    objects[i]->draw(ctx);
+            }
+
+            for(uint i=0; i<badobjs.size(); i++) {
+                if(!badobjs[i]->getDead())
+                    badobjs[i]->draw(ctx);
+            }
+
+            for(uint i=0; i<enemies.size(); i++) {
+                if(!enemies[i]->getDead())
+                    enemies[i]->draw(ctx);
+            }
+
+            player.draw(ctx);
+            break;
     }
-
-    for(uint i=0; i<badobjs.size(); i++) {
-        if(!badobjs[i]->getDead())
-            badobjs[i]->draw(ctx);
-    }
-
-    for(uint i=0; i<enemies.size(); i++) {
-        if(!enemies[i]->getDead())
-            enemies[i]->draw(ctx);
-    }
-
-    player.draw(ctx);
 }
 
 void window::timerEvent(QTimerEvent *ev __attribute__((unused))) {
-    switch(check_win_loss()) {
-        case 0:
-            game_loop();
-            break;
-        case 1:
-            //stop and let player rest
-            reset(true);
-            level_begin();
-            break;
-        case -1:
-            app->exit();
-            break;
+    if(game_state == GAME) {
+        switch(check_win_loss()) {
+            case 0:
+                game_loop();
+                break;
+            case 1:
+                game_state = END_SC;
+                reset(true);
+                level_begin();
+                break;
+            case -1:
+                game_state = END_SC;
+                reset(false);
+                still_playing = false;
+                break;
+        }
     }
 
     repaint();
 }
 
 void window::keyPressEvent(QKeyEvent *ev) {
-    switch(ev->key()) {
-    case Qt::Key_Left:
-        player.setKey(KEY_LEFT, true);
-        break;
-    case Qt::Key_Right:
-        player.setKey(KEY_RIGHT, true);
-        break;
-    case Qt::Key_Up:
-        player.setKey(KEY_UP, true);
-        break;
-    case Qt::Key_Down:
-        player.setKey(KEY_DOWN, true);
-        break;
-    case Qt::Key_Space:
-        player.setKey(SPACE, true);
-        break;
-    case Qt::Key_Q:
-        app->exit();
-        break;
-    default:
-        ev->ignore();
+
+    if(game_state == GAME) {
+        switch(ev->key()) {
+        case Qt::Key_Left:
+            player.setKey(KEY_LEFT, true);
+            break;
+        case Qt::Key_Right:
+            player.setKey(KEY_RIGHT, true);
+            break;
+        case Qt::Key_Up:
+            player.setKey(KEY_UP, true);
+            break;
+        case Qt::Key_Down:
+            player.setKey(KEY_DOWN, true);
+            break;
+        case Qt::Key_Space:
+            player.setKey(SPACE, true);
+            break;
+        case Qt::Key_Q:
+            app->exit();
+            break;
+        default:
+            ev->ignore();
+        }
+    } else {
+        int a = ev->key();
+
+        //Still allow the player to quit.
+        if(a==Qt::Key_Q)
+            app->exit();
+
+        //Don't want the player to accidentally trigger the move to the next level.
+        if(a==Qt::Key_Left || a==Qt::Key_Right || a==Qt::Key_Up ||
+                a==Qt::Key_Down || a==Qt::Key_Space)
+            ev->ignore();
+        else {
+            game_state = GAME;
+            if(!still_playing) {
+                game_state = BEGIN;
+                still_playing = true;
+                reset(false);
+                level_begin();
+            }
+        }
     }
 }
 
@@ -152,10 +205,6 @@ void window::level_begin() {
 
     //ensure next time the level is one higher.
     level++;
-}
-
-void window::end_screen() {
-
 }
 
 void window::menu() {
@@ -239,6 +288,7 @@ void window::move_and_interact() {
         //sometimes good objects go bad...
         for(uint j=0; j<badobjs.size(); j++) {
             if(badobjs[j]->coll_detect(objects[i])) {
+                //TODO: smaller objects split.
                 if(4*badobjs[j]->getPoints() > objects[i]->getPoints()) {
                     badobjs[j]->kill();
                     objects[i]->kill();
@@ -265,6 +315,15 @@ void window::move_and_interact() {
                 objects[j]->kill();
                 objects[i]->hit(objects[j]);
             }
+        }
+    }
+
+    //If an enemy has 0 lives, it esplodes!
+    for(uint i=0; i<enemies.size(); i++) {
+        if(enemies[i]->getLives() <= 0) {
+            objects.push_back(new rock(false, enemies[i]->getX(),
+                                       enemies[i]->getY(),
+                                       enemies[i]->getRot()));
         }
     }
 
