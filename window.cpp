@@ -30,7 +30,7 @@ window::~window() {
 void window::paintEvent(QPaintEvent *ev __attribute__((unused))) {
     QPainter ctx(this);
     ctx.setPen(default_pen);
-    ctx.setFont(QFont("Helvetica Neue", 18, 300));
+    ctx.setFont(QFont("Helvetica Neue", 14, 300));
 
     switch(game_state) {
         case BEGIN:
@@ -176,30 +176,30 @@ void window::level_begin() {
                 objects.push_back(new rock(false));
 
             for(int i=0; i<3; i++)
-                enemies.push_back(new hoarder(&player, objects));
+                enemies.push_back(new hoarder(&player, &objects));
             break;
         case MED:
             for(int i=0; i<70; i++)
                 objects.push_back(new rock(false));
 
             for(int i=0; i<2; i++)
-                enemies.push_back(new hoarder(&player, objects));
+                enemies.push_back(new hoarder(&player, &objects));
 
             for(int i=0; i<2; i++)
-                enemies.push_back(new deft(&player, objects));
+                enemies.push_back(new deft(&player, &objects));
             break;
         case HARD:
             for(int i=0; i<70; i++)
                 objects.push_back(new rock(false));
 
             for(int i=0; i<40; i++)
-                enemies.push_back(new stupid(&player));
+                enemies.push_back(new stupid(&player, &objects));
 
             for(int i=0; i<2; i++)
-                enemies.push_back(new hoarder(&player, objects));
+                enemies.push_back(new hoarder(&player, &objects));
 
             for(int i=0; i<3; i++)
-                enemies.push_back(new deft(&player, objects));
+                enemies.push_back(new deft(&player, &objects));
             break;
     }
 

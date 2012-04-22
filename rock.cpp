@@ -10,6 +10,7 @@ rock::rock(bool e) : ob(rnd(0,S_WID),
                   evil(e) {
 
     points = rnd(0, 60);
+    sp = 10 - 5.5*exp((double)-points/100);
 }
 
 rock::rock(bool e, double nx, double ny, double r) : ob(rnd(0,S_WID),
@@ -21,6 +22,7 @@ rock::rock(bool e, double nx, double ny, double r) : ob(rnd(0,S_WID),
                                    evil(e) {
     points = rnd(0, 60);
     x = nx, y = ny, rot = r;
+    sp = 10 - 5.5*exp((double)-points/100);
 }
 
 rock::rock(bool e, double nx, double ny, double r, int pnts) : ob(rnd(0,S_WID),
@@ -45,15 +47,10 @@ void rock::mov() {
 
     int hue;
     if(!evil) {
-        //trying exponential:
-        //s(0) = .5
-        //s(+inf) -> 6
-        //6 - 5.5*exp(-p)
+        //trying exponential hues and speeds
         hue = 210*exp((double)-points/15) + 30;
-        sp = 6 - 5.5*exp((double)-points/100);
     } else {
         hue = 60*exp((double)-points/15) + 270;
-        sp = 6 - 5.5*exp((double)-points/50);
     }
 
     hue = hue < 0 ? 0 : hue;

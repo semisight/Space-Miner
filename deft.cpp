@@ -1,7 +1,7 @@
 #include "deft.h"
 using namespace std;
 
-deft::deft(play *p, vector<ob*> &g) : hoarder(p, g), is_hoarding(true) {
+deft::deft(play *p, vector<ob*> *g) : hoarder(p, g), is_hoarding(true) {
     sp = 1.5;
 }
 

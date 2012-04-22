@@ -2,15 +2,17 @@
 using namespace std;
 
 void ob::mov() {
-	//Trig calculations to update the object's position
-	x += cos(rot) * sp;
-	y += sin(rot) * sp;
+    //Objects got some bounce!
+    double dx = cos(rot) * sp;
+    double dy = sin(rot) * sp;
 
-	//Keep our object within bounds
-    if(x >= S_WID) x = 0;
-    if(x < 0) x = S_WID-1;
-    if(y >= S_HGT) y = 0;
-    if(y < 0) y = S_HGT-1;
+    if(x >= S_WID-rad || x < rad-1) dx *= -1;
+    if(y >= S_HGT-rad || y < rad-1) dy *= -1;
+
+    rot = atan2(dy, dx);
+
+    x += cos(rot) * sp;
+    y += sin(rot) * sp;
 }
 
 void ob::draw(QPainter &ctx) {

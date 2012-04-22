@@ -39,8 +39,8 @@ namespace words {
         "\tThe premise here is simple; collect the cool yellow/green blue"
         " rocks that you see floating around to get points. Avoid enemies and"
         " their bullets, and poisoned rocks (red/purple). Avoid your bullets"
-        " too. You can shoot with as well (use the [SPACE] bar), but it costs"
-        "energy, which is taken from your points. Your score and lives are in"
+        " too. You can shoot as well (use the [SPACE] bar), but it costs"
+        " energy, which is taken from your points. Your score and lives are in"
         " the title of the window. That's it!\n\n"
         "Press any alphabetic key_");
 

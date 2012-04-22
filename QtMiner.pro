@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     stupid.cpp \
     pugilist.cpp \
     hoarder.cpp \
-    deft.cpp
+    deft.cpp \
+    avoidant.cpp
 
 HEADERS  += window.h \
     ob.h \
@@ -31,4 +32,5 @@ HEADERS  += window.h \
     stupid.h \
     pugilist.h \
     hoarder.h \
-    deft.h
+    deft.h \
+    avoidant.h

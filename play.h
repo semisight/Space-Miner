@@ -5,6 +5,8 @@
 #include <QPoint>
 #include "anima.h"
 
+#define PLAY_MAX_SP 4
+
 class play : public anima {
 public:
     //Constructor

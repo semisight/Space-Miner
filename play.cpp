@@ -24,8 +24,8 @@ void play::mov() {
         if(keys[KEY_RIGHT]) rot += 0.15;
 
     //Keep the player's speed within a sane range
-    if(sp > 4) sp = 4;
-    if(sp < -4) sp = -4;
+    if(sp > PLAY_MAX_SP) sp = PLAY_MAX_SP;
+    if(sp < -PLAY_MAX_SP) sp = -PLAY_MAX_SP;
 
     //Call superclass mov functions
     anima::mov();
