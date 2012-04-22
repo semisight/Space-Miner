@@ -6,8 +6,17 @@ void ob::mov() {
     double dx = cos(rot) * sp;
     double dy = sin(rot) * sp;
 
-    if(x >= S_WID-rad || x < rad-1) dx *= -1;
-    if(y >= S_HGT-rad || y < rad-1) dy *= -1;
+    if(x >= S_WID-rad || x < rad+1) {
+        x = x < rad+1 ? rad+1 : x;
+        x = x >= S_WID-rad ? S_WID-rad : x;
+        dx *= -1;
+    }
+
+    if(y >= S_HGT-rad || y < rad+1) {
+        y = y < rad+1 ? rad+1 : y;
+        y = y >= S_HGT-rad ? S_HGT-rad : y;
+        dy *= -1;
+    }
 
     rot = atan2(dy, dx);
 
@@ -76,4 +85,14 @@ void ob::hit(ob *b) {
 
 bool ob::isDead(ob *b) {
     return b->getDead();
+}
+
+void ob::getInfo(QPainter &ctx) {
+    stringstream ss;
+    ss << points;
+
+    ctx.setFont(QFont("Helvetica Neue", 10));
+    ctx.drawText(QRect(x-10, y+rad+1, 20, 12),
+                 Qt::AlignHCenter,
+                 ss.str().c_str());
 }

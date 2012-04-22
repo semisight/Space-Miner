@@ -25,6 +25,7 @@ public:
     virtual void incScore(int point);
     virtual int getScore();
 
+    void incLives();
     virtual void decLives();
     virtual int getLives();
 

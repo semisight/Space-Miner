@@ -12,7 +12,7 @@ void crafty::mov() {
     if(!bad->empty()) {
         ob* min = find_min(false);
 
-        if(min && hypot(min->getX()-x, min->getY()-y) < 300)
+        if(min && hypot(min->getX()-x, min->getY()-y) < 200)
             nrot = fmod(atan2(min->getY()-y, min->getX()-x) + M_PI_2, M_2_PI);
     }
 

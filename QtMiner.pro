@@ -21,7 +21,9 @@ SOURCES += main.cpp\
     hoarder.cpp \
     deft.cpp \
     avoidant.cpp \
-    crafty.cpp
+    crafty.cpp \
+    craftplus.cpp \
+    crafthunt.cpp
 
 HEADERS  += window.h \
     ob.h \
@@ -35,4 +37,6 @@ HEADERS  += window.h \
     hoarder.h \
     deft.h \
     avoidant.h \
-    crafty.h
+    crafty.h \
+    craftplus.h \
+    crafthunt.h

@@ -57,10 +57,13 @@ int anima::getScore() {
     return points;
 }
 
+void anima::incLives() {
+    lives++;
+}
+
 void anima::decLives() {
     col = QColor(255,0,0);
-
-    lives -= 1;
+    lives--;
 }
 
 int anima::getLives() {

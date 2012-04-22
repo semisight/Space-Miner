@@ -8,6 +8,7 @@ window::window(QApplication *parent) : app(parent) {
     level = EASY;
     game_state = BEGIN;
     still_playing = true;
+    selected_en = 0;
     level_begin();
     timer_id = startTimer(33);
 }
@@ -69,6 +70,9 @@ void window::paintEvent(QPaintEvent *ev __attribute__((unused))) {
                     enemies[i]->draw(ctx);
             }
 
+            if(!enemies.empty())
+                enemies[selected_en % enemies.size()]->getInfo(ctx);
+
             player.draw(ctx);
             break;
     }
@@ -83,6 +87,7 @@ void window::timerEvent(QTimerEvent *ev __attribute__((unused))) {
             case 1:
                 game_state = END_SC;
                 reset(true);
+                player.incLives();
                 level_begin();
                 break;
             case -1:
@@ -161,6 +166,12 @@ void window::keyReleaseEvent(QKeyEvent *ev) {
     case Qt::Key_Space:
         player.setKey(SPACE, false);
         break;
+    case Qt::Key_A:
+        selected_en--;
+        break;
+    case Qt::Key_D:
+        selected_en++;
+        break;
     case Qt::Key_Q:
         app->exit();
         break;
@@ -199,11 +210,23 @@ void window::level_begin() {
                 enemies.push_back(new stupid(&player, &objects, &badobjs));
 
             for(int i=0; i<2; i++)
-                enemies.push_back(new crafty(&player, &objects, &badobjs));
+                enemies.push_back(new craftplus(&player, &objects, &badobjs));
 
             for(int i=0; i<3; i++)
                 enemies.push_back(new deft(&player, &objects, &badobjs));
             break;
+        default:
+            //This is the 4th+ level, if you can get there...
+        for(int i=0; i<2; i++)
+            enemies.push_back(new crafthunt(&player, &objects, &badobjs));
+
+        for(int i=0; i<3; i++)
+            enemies.push_back(new deft(&player, &objects, &badobjs));
+
+        for(int i=0; i<2; i++)
+            enemies.push_back(new hoarder(&player, &objects, &badobjs));
+            break;
+
     }
 
     //ensure next time the level is one higher.
@@ -326,7 +349,8 @@ void window::move_and_interact() {
         if(enemies[i]->getLives() <= 0) {
             objects.push_back(new rock(false, enemies[i]->getX(),
                                        enemies[i]->getY(),
-                                       enemies[i]->getRot()));
+                                       enemies[i]->getRot(),
+                                       enemies[i]->getPoints()));
         }
     }
 
@@ -368,6 +392,7 @@ void window::reset(bool winner=false) {
     badobjs.clear();
     enemies.clear();
     player.reset(winner);
+    selected_en = 0;
 
     if(!winner) level = 0;
 }

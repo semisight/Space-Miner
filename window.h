@@ -19,6 +19,8 @@
 #include "deft.h"
 #include "avoidant.h"
 #include "crafty.h"
+#include "craftplus.h"
+#include "crafthunt.h"
 
 //Levels
 enum {
@@ -99,6 +101,7 @@ private:
     int level;
     int game_state;
     bool still_playing;
+    int selected_en;
 
     QApplication *app;
 };

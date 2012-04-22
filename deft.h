@@ -7,8 +7,8 @@ class deft : public hoarder {
 public:
     deft(play *p, std::vector<ob*> *g, std::vector<ob*> *b);
 
-    void mov();
-    bool firing();
+    virtual void mov();
+    virtual bool firing();
 
 private:
     bool is_hoarding;

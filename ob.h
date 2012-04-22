@@ -2,6 +2,7 @@
 #define OB_H
 
 #include <cstdlib>
+#include <sstream>
 #include <Qt>
 #include <QColor>
 #include <QPainter>
@@ -40,6 +41,9 @@ public:
     void hit(ob *b);
 
     static bool isDead(ob *b);
+
+    //Not a pure getter... but close enough
+    void getInfo(QPainter &ctx);
 
 protected:
     double x, y;        //Position
