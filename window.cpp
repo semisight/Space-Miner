@@ -175,31 +175,34 @@ void window::level_begin() {
             for(int i=0; i<70; i++)
                 objects.push_back(new rock(false));
 
+            for(int i=0; i<2; i++)
+                enemies.push_back(new hoarder(&player, &objects, &badobjs));
+
             for(int i=0; i<3; i++)
-                enemies.push_back(new hoarder(&player, &objects));
+                enemies.push_back(new avoidant(&player, &objects, &badobjs));
             break;
         case MED:
             for(int i=0; i<70; i++)
                 objects.push_back(new rock(false));
 
             for(int i=0; i<2; i++)
-                enemies.push_back(new hoarder(&player, &objects));
+                enemies.push_back(new hoarder(&player, &objects, &badobjs));
 
             for(int i=0; i<2; i++)
-                enemies.push_back(new deft(&player, &objects));
+                enemies.push_back(new deft(&player, &objects, &badobjs));
             break;
         case HARD:
             for(int i=0; i<70; i++)
                 objects.push_back(new rock(false));
 
             for(int i=0; i<40; i++)
-                enemies.push_back(new stupid(&player, &objects));
+                enemies.push_back(new stupid(&player, &objects, &badobjs));
 
             for(int i=0; i<2; i++)
-                enemies.push_back(new hoarder(&player, &objects));
+                enemies.push_back(new hoarder(&player, &objects, &badobjs));
 
             for(int i=0; i<3; i++)
-                enemies.push_back(new deft(&player, &objects));
+                enemies.push_back(new deft(&player, &objects, &badobjs));
             break;
     }
 

@@ -5,7 +5,7 @@
 
 class hoarder : public pugilist {
 public:
-    hoarder(play *p, std::vector<ob*> *g);
+    hoarder(play *p, std::vector<ob*> *g, std::vector<ob*> *b);
 
     virtual void mov();
     virtual bool firing();

@@ -5,7 +5,7 @@
 
 class stupid : public pugilist {
 public:
-    stupid(play *p, std::vector<ob*> *g);
+    stupid(play *p, std::vector<ob*> *g, std::vector<ob*> *b);
 
     void mov();
 

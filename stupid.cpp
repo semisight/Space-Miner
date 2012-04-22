@@ -1,7 +1,7 @@
 #include "stupid.h"
 #include "play.h"
 
-stupid::stupid(play *p, std::vector<ob*> *g) : pugilist(p, g) {
+stupid::stupid(play *p, std::vector<ob*> *g, std::vector<ob*> *b) : pugilist(p, g, b) {
 }
 
 //This is literally the simplest class that makes a "functional" enemy. I may

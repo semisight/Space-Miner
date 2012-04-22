@@ -8,12 +8,13 @@
 
 class pugilist : public anima {
 public:
-    pugilist(play *p, std::vector<ob*> *g);
+    pugilist(play *p, std::vector<ob*> *g, std::vector<ob*> *b);
 
-    ob* find_min();
+    ob* find_min(bool look_at_good);
 protected:
     play *protagon;
     std::vector<ob*> *good;
+    std::vector<ob*> *bad;
 };
 
 #endif // PUGILIST_H

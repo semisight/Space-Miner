@@ -1,10 +1,14 @@
 #ifndef AVOIDANT_H
 #define AVOIDANT_H
 
-class avoidant : public pugilist
-{
+#include "pugilist.h"
+
+class avoidant : public pugilist {
 public:
-    avoidant();
+    avoidant(play *p, std::vector<ob*> *g, std::vector<ob*> *b);
+
+    void mov();
+    bool firing();
 };
 
 #endif // AVOIDANT_H

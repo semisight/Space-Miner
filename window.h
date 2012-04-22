@@ -17,6 +17,7 @@
 #include "stupid.h"
 #include "hoarder.h"
 #include "deft.h"
+#include "avoidant.h"
 
 //Levels
 enum {

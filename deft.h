@@ -5,7 +5,7 @@
 
 class deft : public hoarder {
 public:
-    deft(play *p, std::vector<ob*> *g);
+    deft(play *p, std::vector<ob*> *g, std::vector<ob*> *b);
 
     void mov();
     bool firing();
