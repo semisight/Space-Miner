@@ -32,6 +32,7 @@ void window::paintEvent(QPaintEvent *ev __attribute__((unused))) {
     //ctx.setPen(default_pen);
     ctx.setFont(QFont("Helvetica Neue", 14, 300));
 
+    anima *tmp;
     switch(game_state) {
         case BEGIN:
             ctx.drawText(QRectF(40, 40, S_WID-40, S_HGT-40),
@@ -60,6 +61,16 @@ void window::paintEvent(QPaintEvent *ev __attribute__((unused))) {
             }
             break;
         case GAME:
+            if(!enemies.empty()) {
+                tmp = enemies[selected_en % enemies.size()];
+
+                ctx.setBrush(QBrush(QColor(255, 255, 255)));
+                ctx.drawEllipse(tmp->getX() - tmp->getRad()*1.5,
+                                tmp->getY() - tmp->getRad()*1.5,
+                                tmp->getRad() * 3,
+                                tmp->getRad() * 3);
+            }
+
             for(uint i=0; i<objects.size(); i++) {
                 if(!objects[i]->getDead())
                     objects[i]->draw(ctx);
@@ -76,7 +87,7 @@ void window::paintEvent(QPaintEvent *ev __attribute__((unused))) {
             }
 
             if(!enemies.empty())
-                enemies[selected_en % enemies.size()]->getInfo(ctx);
+                tmp->getInfo(ctx);
 
             player.draw(ctx);
             break;
@@ -225,8 +236,8 @@ void window::level_begin() {
             for(int i=0; i<80; i++)
                 objects.push_back(new rock());
 
-            for(int i=0; i<2; i++)
-                enemies.push_back(new craftplus(&player, &objects, &badobjs));
+            //for(int i=0; i<2; i++)
+            //    enemies.push_back(new craftplus(&player, &objects, &badobjs));
 
             enemies.push_back(new boss(&player, &objects, &badobjs, &enemies));
             break;

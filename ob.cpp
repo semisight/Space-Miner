@@ -94,8 +94,8 @@ void ob::getInfo(QPainter &ctx) {
     stringstream ss;
     ss << points;
 
-    ctx.setFont(QFont("Helvetica Neue", 10));
-    ctx.drawText(QRect(x-10, y+rad+1, 20, 12),
+    ctx.setFont(QFont("Helvetica Neue", 12));
+    ctx.drawText(QRect(x-10, y+rad*1.5, 20, 12),
                  Qt::AlignHCenter,
                  ss.str().c_str());
 }

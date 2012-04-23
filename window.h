@@ -45,11 +45,11 @@ namespace words {
         "\tHello, intrepid explorer! Welcome to Space Miner! I think you'll"
         " see that there's more to this game than meets the eye.\n\n"
         "\tThe premise here is simple; collect the cool yellow/green blue"
-        " rocks that you see floating around to get points. Avoid enemies and"
-        " their bullets, and poisoned rocks (red/purple). Avoid your bullets"
-        " too. You can shoot as well (use the [SPACE] bar), but it costs"
-        " energy, which is taken from your points. Your score and lives are in"
-        " the title of the window. That's it!\n\n"
+        " rocks that you see floating around to get points. Avoid everything"
+        " else (bullets, purple rocks, and enemies). Arrow keys steer you, and"
+        " SPACE shoots. A and D will select an enemy, so that you can view"
+        " their points. There are 4 levels, and enemies will become more"
+        " advanced with each one.\n\n"
         "Press any alphabetic key_");
 
     const QString next_level(
