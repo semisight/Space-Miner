@@ -12,6 +12,12 @@ const QPointF triangle[3] = {
     QPointF( 5,  0)
 };
 
+const QPointF boss_tri[3] = {
+    QPointF(-15, -12),
+    QPointF(-15,  12),
+    QPointF( 15,  0)
+};
+
 class anima : public ob {
 public:
     anima(double nx, double ny, double d, double s, double ss, QColor c);
@@ -19,6 +25,7 @@ public:
     virtual ob* shoot();
 
     void draw(QPainter &ctx);
+    virtual const QPointF* sub_draw() const;
     virtual void mov();
 
     //Setters and getters
@@ -30,10 +37,11 @@ public:
     virtual int getLives();
 
     virtual bool firing() = 0;
-    bool request_shot();
+    virtual bool request_shot();
 protected:
     int lives, bullet_chg;
     QColor def_col;
+    double turn_sp;
 };
 
 #endif // ANIMA_H

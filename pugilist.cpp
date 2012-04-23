@@ -4,6 +4,7 @@ using namespace std;
 pugilist::pugilist(play *p, vector<ob*> *g, vector<ob*> *b) :
     anima(rand()%S_WID, rand()%S_HGT, (rand()%628)/100, MAX_SP, 6.5, QColor(255,0,128)),
     protagon(p), good(g), bad(b) {
+
 }
 
 ob* pugilist::find_min(bool look_at_good) {

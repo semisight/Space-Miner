@@ -5,7 +5,7 @@
 
 class crafthunt : public deft {
 public:
-    crafthunt(play *p, std::vector<ob*> *g, std::vector<ob*> *b);
+    crafthunt(play *p, std::vector<ob*> *g, std::vector<ob*> *b, std::vector<anima*> *e);
 
     void mov();
 };

@@ -13,6 +13,8 @@
 #include <iostream>
 #include <sstream>
 
+#include "rock.h"
+#include "ev_rock.h"
 #include "play.h"
 #include "stupid.h"
 #include "hoarder.h"
@@ -21,12 +23,14 @@
 #include "crafty.h"
 #include "craftplus.h"
 #include "crafthunt.h"
+#include "boss.h"
 
 //Levels
 enum {
     EASY,
     MED,
-    HARD
+    HARD,
+    BOSS
 };
 
 //Game states
@@ -59,6 +63,9 @@ namespace words {
         " regret this moment, but hey, you'll live to fight another day...\n\n"
         "Press Q to quit, or any other alphabetic key to play again."
         );
+
+    const QString wow(
+        "Wow! I really didn't expect you to win... no offense. Play again?");
 }
 
 class window : public QWidget {

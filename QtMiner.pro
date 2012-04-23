@@ -23,7 +23,9 @@ SOURCES += main.cpp\
     avoidant.cpp \
     crafty.cpp \
     craftplus.cpp \
-    crafthunt.cpp
+    crafthunt.cpp \
+    ev_rock.cpp \
+    boss.cpp
 
 HEADERS  += window.h \
     ob.h \
@@ -39,4 +41,6 @@ HEADERS  += window.h \
     avoidant.h \
     crafty.h \
     craftplus.h \
-    crafthunt.h
+    crafthunt.h \
+    ev_rock.h \
+    boss.h

@@ -1,11 +1,10 @@
 #include "window.h"
-#include "rock.h"
 using namespace std;
 
 //---- constructor & destructor
 
 window::window(QApplication *parent) : app(parent) {
-    level = EASY;
+    level = BOSS;
     game_state = BEGIN;
     still_playing = true;
     selected_en = 0;
@@ -41,6 +40,12 @@ void window::paintEvent(QPaintEvent *ev __attribute__((unused))) {
             break;
         case END_SC:
             player.draw(ctx);
+
+            if(level >= BOSS) {
+                ctx.drawText(QRectF(40, 40, S_WID-40, S_HGT-40),
+                             Qt::AlignHCenter | Qt::TextWordWrap,
+                             words::wow);
+            }
 
             if(still_playing) {
                 //Print get ready for level "level"
@@ -184,49 +189,51 @@ void window::level_begin() {
     switch(level) {
         case EASY:
             for(int i=0; i<80; i++)
-                objects.push_back(new rock(false));
+                objects.push_back(new rock());
 
             for(int i=0; i<3; i++)
                 enemies.push_back(new hoarder(&player, &objects, &badobjs));
 
-            for(int i=0; i<3; i++)
+            for(int i=0; i<2; i++)
                 enemies.push_back(new avoidant(&player, &objects, &badobjs));
+
+            for(int i=0; i<1; i++)
+                enemies.push_back(new stupid(&player, &objects, &badobjs));
             break;
         case MED:
             for(int i=0; i<80; i++)
-                objects.push_back(new rock(false));
+                objects.push_back(new rock());
 
             for(int i=0; i<3; i++)
                 enemies.push_back(new crafty(&player, &objects, &badobjs));
 
             for(int i=0; i<3; i++)
-                enemies.push_back(new deft(&player, &objects, &badobjs));
+                enemies.push_back(new deft(&player, &objects, &badobjs, &enemies));
             break;
         case HARD:
             for(int i=0; i<80; i++)
-                objects.push_back(new rock(false));
+                objects.push_back(new rock());
 
-            for(int i=0; i<2; i++)
-                enemies.push_back(new stupid(&player, &objects, &badobjs));
+            for(int i=0; i<3; i++)
+                enemies.push_back(new craftplus(&player, &objects, &badobjs));
+
+            for(int i=0; i<3; i++)
+                enemies.push_back(new crafthunt(&player, &objects, &badobjs, &enemies));
+            break;
+        case BOSS:
+            //This is the 4th level, if you can get there...
+            for(int i=0; i<80; i++)
+                objects.push_back(new rock());
 
             for(int i=0; i<2; i++)
                 enemies.push_back(new craftplus(&player, &objects, &badobjs));
 
-            for(int i=0; i<3; i++)
-                enemies.push_back(new deft(&player, &objects, &badobjs));
+            enemies.push_back(new boss(&player, &objects, &badobjs, &enemies));
             break;
         default:
-            //This is the 4th+ level, if you can get there...
-        for(int i=0; i<2; i++)
-            enemies.push_back(new crafthunt(&player, &objects, &badobjs));
-
-        for(int i=0; i<3; i++)
-            enemies.push_back(new deft(&player, &objects, &badobjs));
-
-        for(int i=0; i<2; i++)
-            enemies.push_back(new hoarder(&player, &objects, &badobjs));
-            break;
-
+            level = EASY;
+            level_begin(); //Recursion!!
+            return;
     }
 
     //ensure next time the level is one higher.
@@ -318,10 +325,9 @@ void window::move_and_interact() {
                 if(4*badobjs[j]->getPoints() > objects[i]->getPoints()) {
                     badobjs[j]->kill();
                     objects[i]->kill();
-                    tmpbad.push_back(new rock(true,
-                                              objects[i]->getX(),
-                                              objects[i]->getY(),
-                                              objects[i]->getRot()));
+                    tmpbad.push_back(new ev_rock(objects[i]->getX(),
+                                                 objects[i]->getY(),
+                                                 objects[i]->getRot()));
                     objects[i]->hit(badobjs[j]);
                 } else {
                     badobjs[j]->kill();
@@ -347,7 +353,7 @@ void window::move_and_interact() {
     //If an enemy has 0 lives, it esplodes!
     for(uint i=0; i<enemies.size(); i++) {
         if(enemies[i]->getLives() <= 0) {
-            objects.push_back(new rock(false, enemies[i]->getX(),
+            objects.push_back(new rock(enemies[i]->getX(),
                                        enemies[i]->getY(),
                                        enemies[i]->getRot(),
                                        enemies[i]->getPoints()));

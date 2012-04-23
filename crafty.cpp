@@ -18,7 +18,7 @@ void crafty::mov() {
 
     if(nrot != rot) {
         if(fabs(nrot - rot) > 0.15)
-            nrot > rot ? rot += 0.15 : rot -= 0.15;
+            nrot > rot ? rot += turn_sp : rot -= turn_sp;
     } else {
         //If we're not being hunted, then we will hoard
         hoarder::mov();

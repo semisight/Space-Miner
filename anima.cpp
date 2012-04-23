@@ -3,6 +3,7 @@ using namespace std;
 
 anima::anima(double nx, double ny, double d, double s, double ss, QColor c) :
     ob(nx, ny, d, s, ss, c), lives(3), bullet_chg(0), def_col(QColor()) {
+    turn_sp = 0.15;
 }
 
 ob* anima::shoot() {
@@ -27,11 +28,15 @@ void anima::draw(QPainter &ctx) {
     ctx.setBrush(col);
 
     //draw it
-    ctx.drawPolygon(triangle, 3);
+    ctx.drawPolygon(sub_draw(), 3);
 
     //teardown transforms
     ctx.rotate(-rot * 180/M_PI);
     ctx.translate(-x, -y);
+}
+
+const QPointF* anima::sub_draw() const {
+    return triangle;
 }
 
 void anima::mov() {
@@ -71,7 +76,7 @@ int anima::getLives() {
 }
 
 bool anima::request_shot() {
-    if(firing() && bullet_chg==0 && points > 10) {
+    if(firing() && bullet_chg==0 && points >= 10) {
         points -= 10;
         bullet_chg = 30;
         return true;

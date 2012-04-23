@@ -7,14 +7,13 @@
 //Not much to the rock class. Just a little evil :P
 class rock : public ob {
 public:
-    rock(bool e);
-    rock(bool e, double nx, double ny, double r);
-    rock(bool e, double nx, double ny, double r, int pnts);
+    rock();
+    rock(double nx, double ny, double r);
+    rock(double nx, double ny, double r, int pnts);
 
-    void mov();
+    virtual void mov();
 
 private:
-    bool evil;
 };
 
 #endif // ROCK_H

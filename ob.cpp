@@ -18,7 +18,10 @@ void ob::mov() {
         dy *= -1;
     }
 
-    rot = atan2(dy, dx);
+    if(sp != 0) {
+        rot = atan2(dy, dx);
+        if(sp < 0) rot += M_PI;
+    }
 
     x += cos(rot) * sp;
     y += sin(rot) * sp;

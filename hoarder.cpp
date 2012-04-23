@@ -19,7 +19,7 @@ void hoarder::mov() {
             nrot = rot;
 
         if(fabs(nrot - rot) > 0.15) {
-            nrot > rot ? rot += 0.15 : rot -= 0.15;
+            nrot > rot ? rot += turn_sp : rot -= turn_sp;
         }
     }
 

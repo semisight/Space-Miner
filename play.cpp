@@ -1,7 +1,8 @@
 #include "play.h"
+using namespace std;
 
 //Constructor
-play::play() : anima(S_WID/2, S_HGT/2, 0, 1, 6.5, QColor(0, 0, 255)) {
+play::play() : anima(S_WID/2, S_HGT/2, 0, -1, 6.5, QColor(0, 0, 255)) {
     keys[0] = false;
     keys[1] = false;
     keys[2] = false;
@@ -18,10 +19,10 @@ void play::mov() {
     sp *= .93;
 
     //Process Keyboard input
-        if(keys[KEY_UP]) sp += 0.25;
-        if(keys[KEY_LEFT]) rot -= 0.15;
-        if(keys[KEY_DOWN]) sp -= 0.25;
-        if(keys[KEY_RIGHT]) rot += 0.15;
+        if(keys[KEY_UP]) sp += 0.3;
+        if(keys[KEY_LEFT]) rot -= turn_sp;
+        if(keys[KEY_DOWN]) sp -= 0.3;
+        if(keys[KEY_RIGHT]) rot += turn_sp;
 
     //Keep the player's speed within a sane range
     if(sp > PLAY_MAX_SP) sp = PLAY_MAX_SP;
