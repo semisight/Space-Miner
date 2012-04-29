@@ -4,7 +4,7 @@ using namespace std;
 //---- constructor & destructor
 
 window::window(QApplication *parent) : app(parent) {
-    level = EASY;
+    level = BOSS;
     game_state = BEGIN;
     still_playing = true;
     selected_en = 0;

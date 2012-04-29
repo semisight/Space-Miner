@@ -2,7 +2,7 @@
 using namespace std;
 
 boss::boss(play *p, vector<ob*> *g, vector<ob*> *b, vector<anima*> *e) :
-    crafthunt(p, g, b, e) {
+    deft(p, g, b, e) {
     fight_rad = 600;
     rad = 3*rad;
     lives = 5;

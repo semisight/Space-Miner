@@ -1,9 +1,9 @@
 #ifndef BOSS_H
 #define BOSS_H
 
-#include "crafthunt.h"
+#include "deft.h"
 
-class boss : public crafthunt {
+class boss : public deft {
 public:
     boss(play *p, std::vector<ob*> *g, std::vector<ob*> *b, std::vector<anima*> *e);
 
